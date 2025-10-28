@@ -15,7 +15,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center border border-gray-500 rounded overflow-hidden w-10/12">
               <input
-                type="email"s
+                type="email"
                 placeholder="Enter your email"
                 className="bg-transparent text-sm px-3 py-2 outline-none w-full"
               />
