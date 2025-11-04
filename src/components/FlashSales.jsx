@@ -1,0 +1,215 @@
+import React, { useEffect, useState, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import ProductCard from "./ui/ProductCard";
+import Button from "./ui/Button";
+
+const products = [
+  {
+    id: 1,
+    title: "The north coat",
+    image: "/assets/north-coat.png",
+    price: 260,
+    oldPrice: 360,
+    rating: 4.5,
+    reviews: 65,
+    discount: "-28%",
+  },
+  {
+    id: 2,
+    title: "Gucci duffle bag",
+    image: "/assets/gucci-duffle-bag.png",
+    price: 960,
+    oldPrice: 1160,
+    rating: 4.7,
+    reviews: 65,
+    discount: "-17%",
+  },
+  {
+    id: 3,
+    title: "RGB liquid CPU Cooler",
+    image: "/assets/rgb-liquid-cooler.png",
+    price: 160,
+    oldPrice: 170,
+    rating: 4.6,
+    reviews: 65,
+    discount: "-6%",
+  },
+  {
+    id: 4,
+    title: "Small BookSelf",
+    image: "/assets/bookshelf.png",
+    price: 360,
+    oldPrice: 170,
+    rating: 4.4,
+    reviews: 65,
+    discount: "-8%",
+  },
+  {
+    id: 5,
+    title: "HAVIT HV-G92 Gamepad",
+    image: "/assets/gamepad.png",
+    price: 120,
+    oldPrice: 160,
+    rating: 4.6,
+    reviews: 88,
+    discount: "-40%",
+  },
+  {
+    id: 6,
+    title: "AK–900 Wired Keyboard",
+    image: "/assets/ak-900-keyboard.png",
+    price: 960,
+    oldPrice: 1160,
+    rating: 4.5,
+    reviews: 75,
+    discount: "-35%",
+  },
+  {
+    id: 7,
+    title: "IPS LCD Gaming Monitor",
+    image: "/assets/ips-monitor.png",
+    price: 370,
+    oldPrice: 400,
+    rating: 4.7,
+    reviews: 99,
+    discount: "-30%",
+  },
+  {
+    id: 8,
+    title: "S-Series Comfort Chair",
+    image: "/assets/comfort-chair.png",
+    price: 375,
+    oldPrice: 400,
+    rating: 4.4,
+    reviews: 99,
+    discount: "-25%",
+  },
+];
+
+const FlashSales = () => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 3,
+    hours: 23,
+    minutes: 19,
+    seconds: 56,
+  });
+
+  const scrollRef = useRef(null);
+
+  // Countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        let { days, hours, minutes, seconds } = prev;
+        if (seconds > 0) seconds--;
+        else if (minutes > 0) {
+          minutes--;
+          seconds = 59;
+        } else if (hours > 0) {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        } else if (days > 0) {
+          days--;
+          hours = 23;
+          minutes = 59;
+          seconds = 59;
+        }
+        return { days, hours, minutes, seconds };
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const format = (val) => val.toString().padStart(2, "0");
+
+  // Carousel navigation
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -250, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 250, behavior: "smooth" });
+  };
+
+return (
+  <div className="container mx-auto overflow-hidden border-b border-gray-200 pt-10 md:pt-[120px] pb-12 md:pb-[87px]">
+    {/* Tag */}
+    <div className="flex items-center gap-3">
+      <div className="w-3 h-6 bg-red-500 rounded-sm md:w-5 md:h-10"></div>
+      <span className="text-red-500 font-semibold text-sm md:text-[16px]">
+        Today's
+      </span>
+    </div>
+
+    {/* Header & Timer */}
+    <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 md:mt-6 gap-6 md:gap-0">
+      {/* Title + Timer Section */}
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-[120px]">
+        {/* Title */}
+        <h2 className="text-[24px] md:text-[36px] font-semibold text-gray-900 leading-tight">
+          Flash Sales
+        </h2>
+
+        {/* Timer */}
+        <div className="flex gap-4 md:gap-6 text-center">
+          {[
+            { label: "Days", value: timeLeft.days },
+            { label: "Hours", value: timeLeft.hours },
+            { label: "Minutes", value: timeLeft.minutes },
+            { label: "Seconds", value: timeLeft.seconds },
+          ].map((item, idx) => (
+            <div key={idx}>
+              <span className="text-[10px] md:text-[12px] text-gray-700 block">
+                {item.label}
+              </span>
+              <p className="text-[20px] md:text-[32px] font-bold leading-none">
+                {format(item.value)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation Buttons */}
+      <div className="flex items-center gap-3 self-end md:self-auto">
+        <button
+          onClick={scrollLeft}
+          className="p-2 md:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+        >
+          <ChevronLeft size={18} />
+        </button>
+        <button
+          onClick={scrollRight}
+          className="p-2 md:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+        >
+          <ChevronRight size={18} />
+        </button>
+      </div>
+    </div>
+
+    {/* Product Carousel */}
+    <div
+      ref={scrollRef}
+      className="mt-6 md:mt-8 flex gap-4 md:gap-[45px] overflow-x-auto scroll-smooth scrollbar-hide snap-x snap-mandatory"
+    >
+      {products.map((item) => (
+        <div key={item.id} className="snap-start shrink-0 w-[160px] md:w-auto">
+          <ProductCard item={item} />
+        </div>
+      ))}
+    </div>
+
+    {/* View All Button */}
+    <div className="mt-10 flex justify-center">
+      <Button
+        title="View All Products"
+        classes="bg-[#DB4444] text-white px-6 md:px-[48px] py-3 md:py-4 rounded-md hover:bg-[#DB4456] transition duration-300"
+      />
+    </div>
+  </div>
+);
+
+};
+
+export default FlashSales;

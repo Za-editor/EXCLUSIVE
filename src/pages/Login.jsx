@@ -1,3 +1,4 @@
+import { FaGooglePlusG } from "react-icons/fa";
 const Login = () => {
   return (
     <div className="flex pt-10 pb-[140px] gap-[129px]">
@@ -45,6 +46,13 @@ const Login = () => {
                 Forget Password?
               </a>
             </div>
+            <button
+              type="button"
+              className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
+            >
+              <FaGooglePlusG className="text-xl" />
+              <span className="text-sm text-gray-700">Login with Google</span>
+            </button>
           </form>
         </div>
       </div>
