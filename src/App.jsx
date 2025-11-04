@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import Homepage from "./pages/Homepage";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
+import AccountPage from "./pages/AccountPage";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,7 @@ function App() {
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/contact" element={<ContactPage />}></Route>
               <Route path="/about" element={<AboutPage />}></Route>
-
+              <Route path="/account" element={<AccountPage />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
