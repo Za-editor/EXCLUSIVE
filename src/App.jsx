@@ -7,6 +7,8 @@ import Homepage from "./pages/Homepage";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
 import AccountPage from "./pages/AccountPage";
+import CheckoutPage from "./pages/CheckOutPage";
+import CartPage from "./pages/CartPage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ function App() {
               <Route path="/contact" element={<ContactPage />}></Route>
               <Route path="/about" element={<AboutPage />}></Route>
               <Route path="/account" element={<AccountPage />}></Route>
+              <Route path="/checkout" element={<CheckoutPage />}></Route>
+              <Route path="/cart" element={<CartPage />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
