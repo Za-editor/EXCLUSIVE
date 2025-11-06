@@ -85,7 +85,37 @@ export const updateCartitems = async (itemId, qty) => {
     .update({ qty, updated_at: new Date() })
     .eq("id", itemId)
     .select()
-        .single();
-    if(error) throw error;
-    return data;
+    .single();
+  if (error) throw error;
+  return data;
+};
+
+export const checkoutCart = async (userId) => {
+  const cartItems = await getCartItems(userId);
+  const total = cartItems.reduce(
+    (sum, index) => sum + index.product_snapshot.price * index.quantity,
+    0
+  );
+
+  const { data: order } = await supabase
+    .from("orders")
+    .insert({ user_id: userId, total_amount: total, status: "paid" })
+    .select()
+    .single();
+
+  const inserts = cartItems.map((item) => ({
+    order_id: order.id,
+    product_id: item.product_id,
+    product_snapshot: item.product_snapshot,
+    quantity: item.quantity,
+    unit_price: item.product_snapshot.price,
+  }));
+
+  await supabase.from("order_items").insert(inserts);
+  await supabase
+    .from("cart_items")
+    .delete()
+    .eq("cart_id", (await ensureCart(userId)).id);
+
+  return order;
 };
