@@ -3,7 +3,7 @@ import { FaCcVisa, FaCcMastercard, FaCcPaypal } from "react-icons/fa";
 
 const CheckoutPage = () => {
   return (
-    <div className="container mx-auto px-4 md:px-8 lg:px-16 py-8">
+    <div className="container mx-auto px-4 md:px-0 py-8">
       {/* Breadcrumb */}
       <div className="text-sm text-gray-500 mb-8 flex flex-wrap items-center gap-1">
         <span className="hover:text-gray-700 cursor-pointer">Account</span> /
