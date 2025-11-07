@@ -8,7 +8,7 @@ const Hero = ({data}) => {
 
 
 
-  // 🗂️ Categories with slugs and children
+  
   const categories = [
     {
       name: "Beauty & Personal Care",
@@ -153,12 +153,12 @@ const Hero = ({data}) => {
                     Up to {(slide.discountPercentage).toFixed(0)}% off Voucher
                   </h1>
 
-                  <a
-                    href={slide.link}
+                  <Link
+                    to={slide.link}
                     className="inline-flex items-center gap-2 border-b border-white hover:opacity-80"
                   >
                     Shop Now →
-                  </a>
+                  </Link>
                 </div>
 
                 {/* Product Image */}

@@ -2,9 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getProducts,
   productsCategory,
-  searchedProducts,
+  relatedProducts,
   singleProducts,
-  sortProducts,
 } from "../services/api/apiCalls";
 
 export const useProducts = () => {
@@ -12,7 +11,7 @@ export const useProducts = () => {
     queryKey: ["products"],
     queryFn: getProducts,
     staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 60, 
+    cacheTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,
   });
 };
@@ -24,21 +23,11 @@ export const useProduct = (id) => {
     enabled: !!id,
   });
 };
-
-export const useSearch = (searchedTerm) => {
+export const useRelatedProduct = (relatedCategory) => {
   return useQuery({
-    queryKey: ["product", searchedTerm],
-    queryFn: () => searchedProducts(searchedTerm),
-    enabled: !!searchedTerm,
-  });
-};
-
-export const useSort = (title, type) => {
-  return useQuery({
-    queryKey: ["product", title, type],
-    queryFn: () => sortProducts(title, type),
-    enabled: !!title,
-    type,
+    queryKey: ["product", relatedCategory],
+    queryFn: () => relatedProducts(relatedCategory),
+    enabled: !!relatedCategory,
   });
 };
 

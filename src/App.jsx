@@ -9,7 +9,9 @@ import AboutPage from "./pages/AboutPage";
 import AccountPage from "./pages/AccountPage";
 import CheckoutPage from "./pages/CheckOutPage";
 import CartPage from "./pages/CartPage";
-import ProductsCategory from "./pages/ProductsCategory";
+import ProductsPage from "./pages/ProductsPage";
+import ProductDetail from "./pages/ProductDetail";
+
 
 const queryClient = new QueryClient();
 
@@ -29,9 +31,14 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
               <Route
-                path="/category/:parent/:child"
-                element={<ProductsCategory />}
+                path="/products/"
+                element={<ProductsPage />}
               />
+              <Route
+                path="/products/:category/:name/:id"
+                element={<ProductDetail />}
+              />
+              
             </Route>
           </Routes>
         </BrowserRouter>

@@ -1,9 +1,14 @@
 import React from "react";
-import { Heart, Eye, Star } from "lucide-react";
+import { Heart, Eye, Star, } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const ProductCard = ({ item, showDiscount }) => {
+const ProductCard = ({ item, showDiscount, isLoading, isError }) => {
+
+      if (isLoading) return <p>Loading...</p>;
+      if (isError) return <p>Error loading products.</p>;
   return (
-    <div className="w-[270px] h-[350px] bg-white rounded-lg cursor-pointer overflow-hidden group hover:shadow-xs transition-all duration-500 relative mt-10">
+    
+    <Link to={`/products/${item.category}/${item.title}/${item.id}`} className="w-[270px] h-[350px] bg-white rounded-lg cursor-pointer overflow-hidden group hover:shadow-xs transition-all duration-500 relative mt-10">
       {/* Image Section */}
       <div className="relative bg-[#F5F5F5] h-[250px] flex justify-center items-center p-6 overflow-hidden">
         {/* Discount Tag */}
@@ -28,7 +33,7 @@ const ProductCard = ({ item, showDiscount }) => {
         <img
           src={item.images?.[0]}
           alt={item.title}
-          className="w-[130px] h-[130px] object-contain"
+          className="w-[200px] h-[200px] object-contain"
         />
 
         {/* Add to Cart Overlay */}
@@ -66,7 +71,7 @@ const ProductCard = ({ item, showDiscount }) => {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

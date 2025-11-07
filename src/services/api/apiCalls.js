@@ -27,6 +27,15 @@ export const singleProducts = async (id) => {
   return data;
 };
 
+export const relatedProducts = async (relatedCategory) => {
+  const res = await fetch(
+    `https://dummyjson.com/products/category/${relatedCategory}`
+  );
+  if (!res.ok) throw new Error("Network response was not ok");
+  const data = await res.json();
+  return data.products;
+};
+
 export const searchedProducts = async (searchedTerm) => {
   const res = await fetch(
     `https://dummyjson.com/products/search?q=${searchedTerm}`
