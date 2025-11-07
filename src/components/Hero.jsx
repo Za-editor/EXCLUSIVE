@@ -1,68 +1,82 @@
 import React, { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-const Hero = () => {
+const Hero = ({data}) => {
   const [current, setCurrent] = useState(0);
   const [openCategory, setOpenCategory] = useState(null);
 
-  const slides = [
-    {
-      id: 1,
-      image: "/assets/Iphone.png",
-      title: "iPhone 14 Series",
-      discount: "Up to 10% off Voucher",
-      link: "#",
-    },
-    {
-      id: 2,
-      image: "/assets/Iphone.png",
-      title: "iPhone 14 Series",
-      discount: "Up to 10% off Voucher",
-      link: "#",
-    },
-  ];
 
-  // 🗂️ Updated Categories (Fashion split into two)
+
+  // 🗂️ Categories with slugs and children
   const categories = [
     {
       name: "Beauty & Personal Care",
-      children: ["Beauty", "Skin Care", "Fragrances"],
+      slug: "beauty-and-personal-care",
+      children: [
+        { name: "Beauty", slug: "beauty" },
+        { name: "Skin Care", slug: "skin-care" },
+        { name: "Fragrances", slug: "fragrances" },
+      ],
     },
     {
       name: "Fashion",
+      slug: "fashion",
       children: [
-        "Mens Shirts",
-        "Mens Shoes",
-        "Mens Watches",
-        "Womens Dresses",
-        "Womens Shoes",
-        "Womens Watches",
-        "Tops",
+        { name: "Mens Shirts", slug: "mens-shirts" },
+        { name: "Mens Shoes", slug: "mens-shoes" },
+        { name: "Mens Watches", slug: "mens-watches" },
+        { name: "Womens Dresses", slug: "womens-dresses" },
+        { name: "Womens Shoes", slug: "womens-shoes" },
+        { name: "Womens Watches", slug: "womens-watches" },
+        { name: "Tops", slug: "tops" },
       ],
     },
     {
       name: "Accessories",
-      children: ["Womens Bags", "Womens Jewellery", "Sunglasses"],
+      slug: "accessories",
+      children: [
+        { name: "Womens Bags", slug: "womens-bags" },
+        { name: "Womens Jewellery", slug: "womens-jewellery" },
+        { name: "Sunglasses", slug: "sunglasses" },
+      ],
     },
     {
       name: "Electronics & Gadgets",
-      children: ["Smartphones", "Laptops", "Tablets", "Mobile Accessories"],
+      slug: "electronics-and-gadgets",
+      children: [
+        { name: "Smartphones", slug: "smartphones" },
+        { name: "Laptops", slug: "laptops" },
+        { name: "Tablets", slug: "tablets" },
+        { name: "Mobile Accessories", slug: "mobile-accessories" },
+      ],
     },
     {
       name: "Home & Living",
-      children: ["Furniture", "Home Decoration", "Kitchen Accessories"],
+      slug: "home-and-living",
+      children: [
+        { name: "Furniture", slug: "furniture" },
+        { name: "Home Decoration", slug: "home-decoration" },
+        { name: "Kitchen Accessories", slug: "kitchen-accessories" },
+      ],
     },
     {
       name: "Sports & Outdoors",
-      children: ["Sports Accessories", "Motorcycle"],
+      slug: "sports-and-outdoors",
+      children: [
+        { name: "Sports Accessories", slug: "sports-accessories" },
+        { name: "Motorcycle", slug: "motorcycle" },
+      ],
     },
     {
       name: "Automotive",
-      children: ["Vehicle"],
+      slug: "automotive",
+      children: [{ name: "Vehicle", slug: "vehicle" }],
     },
     {
       name: "Groceries & Essentials",
-      children: ["Groceries"],
+      slug: "groceries-and-essentials",
+      children: [{ name: "Groceries", slug: "groceries" }],
     },
   ];
 
@@ -96,9 +110,14 @@ const Hero = () => {
                     {cat.children.map((child, i) => (
                       <li
                         key={i}
-                        className="hover:text-gray-800 cursor-pointer flex items-center"
+                        className="hover:text-gray-800 cursor-pointer"
                       >
-                        • {child}
+                        <Link
+                          to={`/category/${cat.slug}/${child.slug}`}
+                          className="flex items-center gap-1"
+                        >
+                          • {child.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -112,9 +131,9 @@ const Hero = () => {
         <div className="relative md:w-4/5 w-full bg-black mt-4 md:mt-5 text-white m-0 md:m-5 p-7 md:p-7 overflow-hidden">
           {/* Slide Wrapper */}
           <div className="relative h-[300px] sm:h-[400px] md:h-[420px] overflow-hidden">
-            {slides.map((slide, index) => (
+            {data.map((slide, index) => (
               <div
-                key={slide.id}
+                key={index}
                 className={`absolute inset-0 flex flex-col md:flex-row items-center justify-between px-4 md:px-16 py-8 md:py-10 transition-opacity duration-700 ease-in-out ${
                   index === current ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
@@ -123,7 +142,7 @@ const Hero = () => {
                 <div className="max-w-lg text-center md:text-left mb-8 md:mb-0">
                   <div className="flex items-center justify-center md:justify-start gap-3 md:gap-6 mb-3">
                     <img
-                      src="/assets/apple.png"
+                      src={"/assets/apple.png"}
                       alt="Apple"
                       className="w-6 md:w-8"
                     />
@@ -131,7 +150,7 @@ const Hero = () => {
                   </div>
 
                   <h1 className="text-[28px] sm:text-[36px] md:text-[48px] font-bold mb-4 leading-tight md:w-3/5 mx-auto md:mx-0">
-                    {slide.discount}
+                    Up to {(slide.discountPercentage).toFixed(0)}% off Voucher
                   </h1>
 
                   <a
@@ -145,7 +164,7 @@ const Hero = () => {
                 {/* Product Image */}
                 <div className="flex justify-center md:justify-end w-full md:w-auto">
                   <img
-                    src={slide.image}
+                    src={slide.images?.[0]}
                     alt={slide.title}
                     className="w-[220px] sm:w-[280px] md:w-[350px] object-contain"
                   />
@@ -156,7 +175,7 @@ const Hero = () => {
 
           {/* Dots */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {slides.map((_, i) => (
+            {data.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}

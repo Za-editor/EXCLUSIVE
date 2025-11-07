@@ -26,9 +26,14 @@ const Homepage = () => {
     .sort((a, b) => new Date(b.meta.createdAt) - new Date(a.meta.createdAt))
     .slice(0, 4);
 
+  
+const smartphoneProducts = products.filter(
+  (product) => product.category === "smartphones"
+);
+
   return (
     <>
-      <Hero />
+      <Hero data={smartphoneProducts} />
       <FlashSales data={flashSales} />
       <Categories />
       <BestSelling data={bestSelling} />

@@ -7,7 +7,7 @@ export const getProducts = async () => {
   const productsByCategory = await Promise.all(
     categories.map(async (category) => {
       const res = await fetch(
-        `https://dummyjson.com/products/category/${category.slug}?limit=2`
+        `https://dummyjson.com/products/category/${category.slug}?limit=3`
       );
       const data = await res.json();
 

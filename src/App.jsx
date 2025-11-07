@@ -9,6 +9,7 @@ import AboutPage from "./pages/AboutPage";
 import AccountPage from "./pages/AccountPage";
 import CheckoutPage from "./pages/CheckOutPage";
 import CartPage from "./pages/CartPage";
+import ProductsCategory from "./pages/ProductsCategory";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,10 @@ function App() {
               <Route path="/account" element={<AccountPage />}></Route>
               <Route path="/checkout" element={<CheckoutPage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
+              <Route
+                path="/category/:parent/:child"
+                element={<ProductsCategory />}
+              />
             </Route>
           </Routes>
         </BrowserRouter>
