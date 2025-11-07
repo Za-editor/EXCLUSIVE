@@ -35,6 +35,9 @@ export const useCategory = (category) => {
   return useQuery({
     queryKey: ["products", category],
     queryFn: () => productsCategory(category),
-    enabled: !!category,
+
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
   });
 };

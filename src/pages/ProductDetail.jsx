@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaTruck, FaUndo } from "react-icons/fa";
 import ProductCard from "../components/ui/ProductCard";
 import { useProduct, useRelatedProduct } from "../hooks/useProducts";
@@ -21,6 +21,21 @@ const ProductDetail = () => {
       setSelectedImage(product.images[0]);
     }
   }, [product]);
+ const navigate = useNavigate();
+ const { pathname } = useLocation();
+   const pathParts = pathname.split("/").filter(Boolean);
+
+const handleClick = (index) => {
+  const cleanedParts = pathParts.filter(
+    (part) => isNaN(Number(part)) 
+  );
+
+
+  const newPath =
+    index === -1 ? "/" : "/" + cleanedParts.slice(0, index + 1).join("/");
+
+  navigate(newPath);
+};
 
   if (isLoading)
     return <div className="text-center py-10">Loading product...</div>;
@@ -28,9 +43,40 @@ const ProductDetail = () => {
     return <div className="text-center py-10">Product not found.</div>;
 
   return (
-    <section className="container mx-auto px-4 py-10">
+    <section className="container mx-auto px-4 md:px-0 py-10">
+      <div className="flex gap-2 text-gray-600 my-10">
+        <span
+          onClick={() => handleClick(-1)}
+          className="cursor-pointer hover:text-black font-medium"
+        >
+          Home
+        </span>
+
+        {pathParts
+          .filter((part) => isNaN(Number(part))) // remove numeric IDs
+          .map((part, index, arr) => {
+            const isLast = index === arr.length - 1;
+            const cleaned = decodeURIComponent(part.replace(/-/g, " "));
+
+            return (
+              <React.Fragment key={index}>
+                <span className="text-gray-400">/</span>
+                {isLast ? (
+                  <span className="text-gray-500 capitalize">{cleaned}</span>
+                ) : (
+                  <span
+                    onClick={() => handleClick(index)}
+                    className="cursor-pointer hover:text-black capitalize"
+                  >
+                    {cleaned}
+                  </span>
+                )}
+              </React.Fragment>
+            );
+          })}
+      </div>
       <div className="flex flex-col md:flex-row gap-8">
-        {/* LEFT: Image Gallery */}
+        {/* Left Image Gallery */}
         <div className="flex flex-col md:w-3/5">
           <div className="flex gap-3 mb-4">
             <div className="flex flex-col gap-3 w-40">
@@ -58,7 +104,7 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* RIGHT: Product Info */}
+        {/* Right Product Info */}
         <div className="flex-1 space-y-4">
           <h2 className="text-2xl font-semibold">{product.title}</h2>
           <div className="flex items-center gap-3">

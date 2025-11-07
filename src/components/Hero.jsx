@@ -113,7 +113,7 @@ const Hero = ({data}) => {
                         className="hover:text-gray-800 cursor-pointer"
                       >
                         <Link
-                          to={`/category/${cat.slug}/${child.slug}`}
+                          to={`/products/${child.slug}`}
                           className="flex items-center gap-1"
                         >
                           • {child.name}
@@ -154,7 +154,7 @@ const Hero = ({data}) => {
                   </h1>
 
                   <Link
-                    to={slide.link}
+                    to={`/products/${slide.category}/${slide.title}/${slide.id}`}
                     className="inline-flex items-center gap-2 border-b border-white hover:opacity-80"
                   >
                     Shop Now →

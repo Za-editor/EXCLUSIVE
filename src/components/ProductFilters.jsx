@@ -21,13 +21,14 @@ const ProductFilters = ({ filters, setFilters }) => {
   };
 
   return (
-    <aside className="w-full md:w-1/4 border-r border-gray-200 p-4 space-y-6">
+    <aside className="w-full md:w-1/4 border-r border-gray-200 pr-4 space-y-6">
       {/* Categories */}
       <div>
         <h3 className="font-semibold mb-2">Categories</h3>
         {categories.map((cat) => (
           <label key={cat} className="flex items-center gap-2 mb-2">
             <input
+              className="cursor-pointer"
               type="radio"
               name="category"
               checked={filters.category === cat}
@@ -69,7 +70,7 @@ const ProductFilters = ({ filters, setFilters }) => {
             search: "",
           })
         }
-        className="text-sm text-gray-500 hover:text-black underline"
+        className="text-sm text-gray-500 hover:text-black underline cursor-pointer"
       >
         Reset Filters
       </button>

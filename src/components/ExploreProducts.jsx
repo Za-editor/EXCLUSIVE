@@ -2,13 +2,14 @@ import React, {  useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ui/ProductCard";
 import Button from "./ui/Button";
+import { Link } from "react-router-dom";
 
 
 
 const ExploreProducts = ({data}) => {
 
-const evenProducts = data.filter((_, index) => index % 2 === 0);
-const oddProducts = data.filter((_, index) => index % 2 !== 0);
+const evenProducts = data.filter((_, index) => index % 2 === 0).slice(0, 10);
+const oddProducts = data.filter((_, index) => index % 2 !== 0).slice(0, 10);
   const scrollRef = useRef(null);
   const scrollRef2 = useRef(null);
 
@@ -32,7 +33,9 @@ const oddProducts = data.filter((_, index) => index % 2 !== 0);
       {/* Tag */}
       <div className="flex items-center gap-4">
         <div className="w-5 h-10 bg-red-500 rounded-sm"></div>
-        <span className="text-red-500 font-semibold text-[16px]">Our Products</span>
+        <span className="text-red-500 font-semibold text-[16px]">
+          Our Products
+        </span>
       </div>
 
       {/* Header & Timer */}
@@ -42,7 +45,6 @@ const oddProducts = data.filter((_, index) => index % 2 !== 0);
             <h2 className="text-[36px] font-semibold text-gray-900">
               Explore Our Products
             </h2>
-
           </div>
         </div>
 
@@ -85,10 +87,12 @@ const oddProducts = data.filter((_, index) => index % 2 !== 0);
         ))}
       </div>
       <div className="mt-15 flex justify-center">
-        <Button
-          title="View All Products"
-          classes=" bg-[#DB4444] text-white px-[48px] py-4 rounded-md hover:bg-[#DB4456] transition cursor-pointer duration-300"
-        />
+        <Link to="/products">
+          <Button
+            title="View All Products"
+            classes=" bg-[#DB4444] text-white px-[48px] py-4 rounded-md hover:bg-[#DB4456] transition cursor-pointer duration-300"
+          />
+        </Link>
       </div>
     </div>
   );

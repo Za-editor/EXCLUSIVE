@@ -7,7 +7,7 @@ export const getProducts = async () => {
   const productsByCategory = await Promise.all(
     categories.map(async (category) => {
       const res = await fetch(
-        `https://dummyjson.com/products/category/${category.slug}?limit=3`
+        `https://dummyjson.com/products/category/${category.slug}?limit=10`
       );
       const data = await res.json();
 
@@ -60,5 +60,7 @@ export const productsCategory = async (category) => {
   );
   if (!res.ok) throw new Error("Network response was not ok");
   const data = await res.json();
+ 
+  
   return data.products;
 };
