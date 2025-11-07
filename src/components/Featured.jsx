@@ -17,7 +17,7 @@ const Featured = () => {
         {/* PlayStation 5 */}
         <div className="col-start-1 row-start-1 row-span-2 md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-8 bg-black rounded-md relative flex items-center group cursor-pointer">
           <img
-            src="/assets/ps5-slim.png"
+            src={"/assets/ps5-slim.png"}
             alt="PlayStation 5"
             className="object-contain ml-8 group-hover:scale-102 transition-transform duration"
           />

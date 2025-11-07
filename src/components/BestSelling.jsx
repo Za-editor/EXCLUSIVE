@@ -2,60 +2,9 @@ import React from "react";
 import ProductCard from "./ui/ProductCard";
 import Button from "./ui/Button";
 
-const products = [
-  {
-    id: 1,
-    title: "The north coat",
-    image: "/assets/north-coat.png",
-    price: 260,
-    oldPrice: 360,
-    rating: 4.5,
-    reviews: 65,
-    discount: "-28%",
-  },
-  {
-    id: 2,
-    title: "Gucci duffle bag",
-    image: "/assets/gucci-duffle-bag.png",
-    price: 960,
-    oldPrice: 1160,
-    rating: 4.7,
-    reviews: 65,
-    discount: "-17%",
-  },
-  {
-    id: 3,
-    title: "RGB liquid CPU Cooler",
-    image: "/assets/rgb-liquid-cooler.png",
-    price: 160,
-    oldPrice: 170,
-    rating: 4.6,
-    reviews: 65,
-    discount: "-6%",
-  },
-  {
-    id: 4,
-    title: "Small BookSelf",
-    image: "/assets/bookshelf.png",
-    price: 360,
-    oldPrice: 170,
-    rating: 4.4,
-    reviews: 65,
-    discount: "-8%",
-  },
-  {
-    id: 5,
-    title: "HAVIT HV-G92 Gamepad",
-    image: "/assets/gamepad.png",
-    price: 120,
-    oldPrice: 160,
-    rating: 4.6,
-    reviews: 88,
-    discount: "-40%",
-  },
-];
 
-const BestSelling = () => {
+
+const BestSelling = ({data}) => {
   return (
     <div className="pt-[150px] pb-[87px] container mx-auto overflow-hidden border-b border-gray-200 ">
       {/* Tag */}
@@ -87,9 +36,9 @@ const BestSelling = () => {
 
       {/* Products */}
       <div className="mt-8 flex gap-[45px] overflow-x-auto">
-        {products.map((item) => (
+        {data.map((item) => (
           <div key={item.id} className="snap-start shrink-0">
-            <ProductCard item={item} />
+            <ProductCard item={item} showDiscount={ false} />
           </div>
         ))}
       </div>

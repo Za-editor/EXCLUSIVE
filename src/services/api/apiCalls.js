@@ -1,8 +1,23 @@
 export const getProducts = async () => {
-  const res = await fetch("https://dummyjson.com/products");
-  if (!res.ok) throw new Error("Network response was not ok");
-  const data = await res.json();
-  return data.products;
+  const categoriesRes = await fetch(
+    "https://dummyjson.com/products/categories"
+  );
+  const categories = await categoriesRes.json();
+
+  const productsByCategory = await Promise.all(
+    categories.map(async (category) => {
+      const res = await fetch(
+        `https://dummyjson.com/products/category/${category.slug}?limit=2`
+      );
+      const data = await res.json();
+
+      return data.products;
+    })
+  );
+
+  const allProducts = productsByCategory.flat();
+
+  return allProducts;
 };
 
 export const singleProducts = async (id) => {

@@ -3,6 +3,8 @@ import { FaChevronRight } from "react-icons/fa";
 
 const Hero = () => {
   const [current, setCurrent] = useState(0);
+  const [openCategory, setOpenCategory] = useState(null);
+
   const slides = [
     {
       id: 1,
@@ -20,17 +22,53 @@ const Hero = () => {
     },
   ];
 
+  // 🗂️ Updated Categories (Fashion split into two)
   const categories = [
-    "Woman’s Fashion",
-    "Men’s Fashion",
-    "Electronics",
-    "Home & Lifestyle",
-    "Medicine",
-    "Sports & Outdoor",
-    "Baby’s & Toys",
-    "Groceries & Pets",
-    "Health & Beauty",
+    {
+      name: "Beauty & Personal Care",
+      children: ["Beauty", "Skin Care", "Fragrances"],
+    },
+    {
+      name: "Fashion",
+      children: [
+        "Mens Shirts",
+        "Mens Shoes",
+        "Mens Watches",
+        "Womens Dresses",
+        "Womens Shoes",
+        "Womens Watches",
+        "Tops",
+      ],
+    },
+    {
+      name: "Accessories",
+      children: ["Womens Bags", "Womens Jewellery", "Sunglasses"],
+    },
+    {
+      name: "Electronics & Gadgets",
+      children: ["Smartphones", "Laptops", "Tablets", "Mobile Accessories"],
+    },
+    {
+      name: "Home & Living",
+      children: ["Furniture", "Home Decoration", "Kitchen Accessories"],
+    },
+    {
+      name: "Sports & Outdoors",
+      children: ["Sports Accessories", "Motorcycle"],
+    },
+    {
+      name: "Automotive",
+      children: ["Vehicle"],
+    },
+    {
+      name: "Groceries & Essentials",
+      children: ["Groceries"],
+    },
   ];
+
+  const toggleCategory = (index) => {
+    setOpenCategory(openCategory === index ? null : index);
+  };
 
   return (
     <section className="container mx-auto px-4 md:px-0">
@@ -39,18 +77,39 @@ const Hero = () => {
         <aside className="hidden md:block md:w-1/5 border-r border-gray-200 px-6 py-6">
           <ul className="space-y-4 text-gray-700 text-sm md:text-base">
             {categories.map((cat, index) => (
-              <li
-                key={index}
-                className="flex items-center justify-between hover:text-black cursor-pointer"
-              >
-                {cat} <FaChevronRight className="text-xs" />
+              <li key={index}>
+                <div
+                  className="flex items-center justify-between hover:text-black cursor-pointer"
+                  onClick={() => toggleCategory(index)}
+                >
+                  {cat.name}
+                  <FaChevronRight
+                    className={`text-xs transition-transform duration-300 ${
+                      openCategory === index ? "rotate-90" : ""
+                    }`}
+                  />
+                </div>
+
+                {/* Child Categories */}
+                {openCategory === index && (
+                  <ul className="mt-2 ml-4 space-y-2 text-gray-500 text-sm transition-all duration-300">
+                    {cat.children.map((child, i) => (
+                      <li
+                        key={i}
+                        className="hover:text-gray-800 cursor-pointer flex items-center"
+                      >
+                        • {child}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
         </aside>
 
         {/* Hero Section */}
-        <div className="relative md:w-4/5 w-full bg-black mt-4 md:mt-5 text-white m-0 md:m-5 p-7 md:p-7  overflow-hidden">
+        <div className="relative md:w-4/5 w-full bg-black mt-4 md:mt-5 text-white m-0 md:m-5 p-7 md:p-7 overflow-hidden">
           {/* Slide Wrapper */}
           <div className="relative h-[300px] sm:h-[400px] md:h-[420px] overflow-hidden">
             {slides.map((slide, index) => (

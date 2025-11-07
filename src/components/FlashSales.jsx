@@ -3,90 +3,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ui/ProductCard";
 import Button from "./ui/Button";
 
-const products = [
-  {
-    id: 1,
-    title: "The north coat",
-    image: "/assets/north-coat.png",
-    price: 260,
-    oldPrice: 360,
-    rating: 4.5,
-    reviews: 65,
-    discount: "-28%",
-  },
-  {
-    id: 2,
-    title: "Gucci duffle bag",
-    image: "/assets/gucci-duffle-bag.png",
-    price: 960,
-    oldPrice: 1160,
-    rating: 4.7,
-    reviews: 65,
-    discount: "-17%",
-  },
-  {
-    id: 3,
-    title: "RGB liquid CPU Cooler",
-    image: "/assets/rgb-liquid-cooler.png",
-    price: 160,
-    oldPrice: 170,
-    rating: 4.6,
-    reviews: 65,
-    discount: "-6%",
-  },
-  {
-    id: 4,
-    title: "Small BookSelf",
-    image: "/assets/bookshelf.png",
-    price: 360,
-    oldPrice: 170,
-    rating: 4.4,
-    reviews: 65,
-    discount: "-8%",
-  },
-  {
-    id: 5,
-    title: "HAVIT HV-G92 Gamepad",
-    image: "/assets/gamepad.png",
-    price: 120,
-    oldPrice: 160,
-    rating: 4.6,
-    reviews: 88,
-    discount: "-40%",
-  },
-  {
-    id: 6,
-    title: "AK–900 Wired Keyboard",
-    image: "/assets/ak-900-keyboard.png",
-    price: 960,
-    oldPrice: 1160,
-    rating: 4.5,
-    reviews: 75,
-    discount: "-35%",
-  },
-  {
-    id: 7,
-    title: "IPS LCD Gaming Monitor",
-    image: "/assets/ips-monitor.png",
-    price: 370,
-    oldPrice: 400,
-    rating: 4.7,
-    reviews: 99,
-    discount: "-30%",
-  },
-  {
-    id: 8,
-    title: "S-Series Comfort Chair",
-    image: "/assets/comfort-chair.png",
-    price: 375,
-    oldPrice: 400,
-    rating: 4.4,
-    reviews: 99,
-    discount: "-25%",
-  },
-];
 
-const FlashSales = () => {
+
+const FlashSales = ({data}) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 3,
     hours: 23,
@@ -193,9 +112,9 @@ return (
       ref={scrollRef}
       className="mt-6 md:mt-8 flex gap-4 md:gap-[45px] overflow-x-auto scroll-smooth scrollbar-hide snap-x snap-mandatory"
     >
-      {products.map((item) => (
+      {data.map((item) => (
         <div key={item.id} className="snap-start shrink-0 w-[160px] md:w-auto">
-          <ProductCard item={item} />
+          <ProductCard item={item} showDiscount={true} />
         </div>
       ))}
     </div>
