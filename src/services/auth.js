@@ -1,19 +1,42 @@
 import { supabase } from "../lib/supabase-client";
 
+// Email Sign up
 export const signUpWithEmail = async (email, password) => {
-    supabase.auth.signUp({ email, password });
-}
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) throw error;
+  return data;
+};
 
-export const signInWithEmail = async (email, password) => { 
-    supabase.auth.signIn({ email, password });
-}
-export const signInWithGoogle = async () => { 
-    supabase.auth.signInWithOAuth({provider: "google"})
-}
+// Email Sign in
+export const signInWithEmail = async (email, password) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) throw error;
+  return data;
+};
+
+// Google Sign in
+export const signInWithGoogle = async () => {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.origin,
+    },
+  });
+    if (error) throw error;
+};
+
+
+// Sign Out
 export const signOut = async () => {
-    supabase.auth.signOut();
-}
+    const {error} = await supabase.auth.signOut()
+    if (error) throw error;
+};
 
-export const onAuthStateChange = (callback) => { 
-    supabase.auth.onAuthStateChange((event, session) => callback(event, session));
-}
+
+// Listen to auth state changes
+export const onAuthStateChange = (callback) => {
+  supabase.auth.onAuthStateChange((event, session) => callback(event, session));
+};

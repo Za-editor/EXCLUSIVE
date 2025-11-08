@@ -1,7 +1,37 @@
 import { FaGooglePlusG } from "react-icons/fa";
-
+import { signUpWithEmail, signInWithGoogle } from "../services/auth";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      await signUpWithEmail(email, password);
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      await signInWithGoogle()
+    } catch (error) {
+      setError(error.message);
+    }
+  }
   return (
     <div className="flex pt-10 pb-[140px] gap-[129px]">
       {/* Left Section */}
@@ -21,7 +51,7 @@ const SignUp = () => {
           </h2>
           <p className="text-sm text-gray-600 mb-6">Enter your details below</p>
 
-          <form className="space-y-5">
+          <form onSubmit={handleSignUp} className="space-y-5">
             <div>
               <input
                 type="text"
@@ -33,6 +63,8 @@ const SignUp = () => {
               <input
                 type="text"
                 placeholder="Email or Phone Number"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full border-b border-gray-300 focus:outline-none focus:border-gray-800 py-2"
               />
             </div>
@@ -40,19 +72,23 @@ const SignUp = () => {
               <input
                 type="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full border-b border-gray-300 focus:outline-none focus:border-gray-800 py-2"
               />
             </div>
-
+            {error && <p className="text-red-500 text-sm">{error}</p>}
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition"
             >
-              Create Account
+              {loading? "Signing up" : "Sign Up"}
             </button>
 
             <button
               type="button"
+              onClick={handleGoogleSignUp}
               className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
             >
               <FaGooglePlusG className="text-xl" />

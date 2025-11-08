@@ -80,7 +80,7 @@ const handleClick = (index) => {
         <div className="flex flex-col md:w-3/5">
           <div className="flex gap-3 mb-4">
             <div className="flex flex-col gap-3 w-40">
-              {product.images?.map((img, i) => (
+              {product.images.slice(0, 4)?.map((img, i) => (
                 <img
                   key={i}
                   src={img}

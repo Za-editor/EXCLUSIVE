@@ -3,9 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ui/ProductCard";
 import Button from "./ui/Button";
 
-
-
-const FlashSales = ({data}) => {
+const FlashSales = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 3,
     hours: 23,
@@ -51,84 +49,78 @@ const FlashSales = ({data}) => {
     scrollRef.current.scrollBy({ left: 250, behavior: "smooth" });
   };
 
-return (
-  <div className="container mx-auto overflow-hidden border-b border-gray-200 pt-10 md:pt-[120px] pb-12 md:pb-[87px]">
-    {/* Tag */}
-    <div className="flex items-center gap-3">
-      <div className="w-3 h-6 bg-red-500 rounded-sm md:w-5 md:h-10"></div>
-      <span className="text-red-500 font-semibold text-sm md:text-[16px]">
-        Today's
-      </span>
-    </div>
+  return (
+    <div className="container mx-auto overflow-hidden border-b border-gray-200 pt-10 md:pt-[120px] pb-12 md:pb-[87px]">
+      {/* Tag */}
+      <div className="flex items-center gap-3">
+        <div className="w-3 h-6 bg-red-500 rounded-sm md:w-5 md:h-10"></div>
+        <span className="text-red-500 font-semibold text-sm md:text-[16px]">
+          Today's
+        </span>
+      </div>
 
-    {/* Header & Timer */}
-    <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 md:mt-6 gap-6 md:gap-0">
-      {/* Title + Timer Section */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-[120px]">
-        {/* Title */}
-        <h2 className="text-[24px] md:text-[36px] font-semibold text-gray-900 leading-tight">
-          Flash Sales
-        </h2>
+      {/* Header & Timer */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 md:mt-6 gap-6 md:gap-0">
+        {/* Title + Timer Section */}
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-[120px]">
+          {/* Title */}
+          <h2 className="text-[24px] md:text-[36px] font-semibold text-gray-900 leading-tight">
+            Flash Sales
+          </h2>
 
-        {/* Timer */}
-        <div className="flex gap-4 md:gap-6 text-center">
-          {[
-            { label: "Days", value: timeLeft.days },
-            { label: "Hours", value: timeLeft.hours },
-            { label: "Minutes", value: timeLeft.minutes },
-            { label: "Seconds", value: timeLeft.seconds },
-          ].map((item, idx) => (
-            <div key={idx}>
-              <span className="text-[10px] md:text-[12px] text-gray-700 block">
-                {item.label}
-              </span>
-              <p className="text-[20px] md:text-[32px] font-bold leading-none">
-                {format(item.value)}
-              </p>
-            </div>
-          ))}
+          {/* Timer */}
+          <div className="flex gap-4 md:gap-6 text-center">
+            {[
+              { label: "Days", value: timeLeft.days },
+              { label: "Hours", value: timeLeft.hours },
+              { label: "Minutes", value: timeLeft.minutes },
+              { label: "Seconds", value: timeLeft.seconds },
+            ].map((item, idx) => (
+              <div key={idx}>
+                <span className="text-[10px] md:text-[12px] text-gray-700 block">
+                  {item.label}
+                </span>
+                <p className="text-[20px] md:text-[32px] font-bold leading-none">
+                  {format(item.value)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex items-center gap-3 self-end md:self-auto">
+          <button
+            onClick={scrollLeft}
+            className="p-2 md:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <button
+            onClick={scrollRight}
+            className="p-2 md:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
+          >
+            <ChevronRight size={18} />
+          </button>
         </div>
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex items-center gap-3 self-end md:self-auto">
-        <button
-          onClick={scrollLeft}
-          className="p-2 md:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
-        >
-          <ChevronLeft size={18} />
-        </button>
-        <button
-          onClick={scrollRight}
-          className="p-2 md:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition"
-        >
-          <ChevronRight size={18} />
-        </button>
+      {/* Product Carousel */}
+      <div
+        ref={scrollRef}
+        className="mt-6 md:mt-8 flex gap-4 md:gap-[45px] overflow-x-auto scroll-smooth scrollbar-hide snap-x snap-mandatory"
+      >
+        {data.map((item) => (
+          <div
+            key={item.id}
+            className="snap-start shrink-0 w-[160px] md:w-auto"
+          >
+            <ProductCard item={item} showDiscount={true} />
+          </div>
+        ))}
       </div>
     </div>
-
-    {/* Product Carousel */}
-    <div
-      ref={scrollRef}
-      className="mt-6 md:mt-8 flex gap-4 md:gap-[45px] overflow-x-auto scroll-smooth scrollbar-hide snap-x snap-mandatory"
-    >
-      {data.map((item) => (
-        <div key={item.id} className="snap-start shrink-0 w-[160px] md:w-auto">
-          <ProductCard item={item} showDiscount={true} />
-        </div>
-      ))}
-    </div>
-
-    {/* View All Button */}
-    <div className="mt-10 flex justify-center">
-      <Button
-        title="View All Products"
-        classes="bg-[#DB4444] text-white px-6 md:px-[48px] py-3 md:py-4 rounded-md hover:bg-[#DB4456] transition duration-300"
-      />
-    </div>
-  </div>
-);
-
+  );
 };
 
 export default FlashSales;
