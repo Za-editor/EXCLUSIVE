@@ -106,7 +106,7 @@ const ProductsPage = () => {
         <ProductFilters filters={filters} setFilters={setFilters} />
 
         <div className="flex-1">
-          <div className="flex items-center justify-between p-4">
+          <div className="flex items-center justify-between px-4">
             <h2 className="text-xl font-semibold capitalize">
               Explore {category ? category : "All Products"}
             </h2>

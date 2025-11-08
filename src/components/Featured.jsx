@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Featured = () => {
   return (
@@ -15,32 +16,38 @@ const Featured = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-8 md:grid-rows-8 gap-4 m-4">
         {/* PlayStation 5 */}
-        <div className="col-start-1 row-start-1 row-span-2 md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-8 bg-black rounded-md relative flex items-center group cursor-pointer">
+        <Link
+          to={"products/mobile-accessories"}
+          className="col-start-1 row-start-1 row-span-2 md:col-start-1 md:row-start-1 md:col-span-2 md:row-span-8 bg-black rounded-md relative flex items-center group cursor-pointer"
+        >
           <img
             src={"/assets/ps5-slim.png"}
             alt="PlayStation 5"
             className="object-contain ml-8 group-hover:scale-102 transition-transform duration"
           />
           <div className="absolute bottom-6 left-6 text-white">
-            <h2 className="text-2xl font-semibold mb-1">PlayStation 5</h2>
+            <h2 className="text-2xl font-semibold mb-1">Accessories</h2>
             <p className="text-sm text-gray-300 mb-3 w-60">
-              Black and White version of the PS5 coming out on sale.
+              All kinds of accessories are out on Sale.
             </p>
             <button className="text-sm font-medium border-b border-white w-fit hover:text-gray-300 cursor-pointer">
               Shop Now
             </button>
           </div>
-        </div>
+        </Link>
 
         {/* Women’s Collections */}
-        <div className="col-start-1 row-start-3 row-span-2 md:col-start-3 md:row-start-1 md:col-span-2 md:row-span-4 bg-black rounded-md relative flex items-center justify-center group cursor-pointer overflow-hidden">
+        <Link
+          to={"products/womens-dresses"}
+          className="col-start-1 row-start-3 row-span-2 md:col-start-3 md:row-start-1 md:col-span-2 md:row-span-4 bg-black rounded-md relative flex items-center justify-center group cursor-pointer overflow-hidden"
+        >
           <img
             src="/assets/attractive-woman.png"
             alt="Women's Collections"
             className="object-contain group-hover:scale-102 transition-transform duration"
           />
           <div className="absolute bottom-6 left-6 text-white">
-            <h2 className="text-xl font-semibold mb-1">Women’s Collections</h2>
+            <h2 className="text-xl font-semibold mb-1">Womens Dresses</h2>
             <p className="text-sm text-gray-300 mb-3 w-60">
               Featured woman collections that give you another vibe.
             </p>
@@ -48,10 +55,13 @@ const Featured = () => {
               Shop Now
             </button>
           </div>
-        </div>
+        </Link>
 
         {/* Speakers */}
-        <div className="col-start-1 row-start-5 row-span-2 md:col-start-3 md:row-start-5 md:col-span-1 md:row-span-4 bg-black rounded-md relative flex items-center justify-center group cursor-pointer overflow-hidden">
+        <Link
+          to={"products/mobile-accessories"}
+          className="col-start-1 row-start-5 row-span-2 md:col-start-3 md:row-start-5 md:col-span-1 md:row-span-4 bg-black rounded-md relative flex items-center justify-center group cursor-pointer overflow-hidden"
+        >
           <img
             src="/assets/speakers.png"
             alt="Speakers"
@@ -66,10 +76,13 @@ const Featured = () => {
               Shop Now
             </button>
           </div>
-        </div>
+        </Link>
 
         {/* Perfume */}
-        <div className="col-start-1 row-start-7 row-span-2 md:col-start-4 md:row-start-5 md:col-span-1 md:row-span-4 bg-black rounded-md relative flex items-end justify-center group cursor-pointer overflow-hidden">
+        <Link
+          to={"products/fragrances"}
+          className="col-start-1 row-start-7 row-span-2 md:col-start-4 md:row-start-5 md:col-span-1 md:row-span-4 bg-black rounded-md relative flex items-end justify-center group cursor-pointer overflow-hidden"
+        >
           <img
             src="/assets/perfume.png"
             alt="Perfume"
@@ -84,7 +97,7 @@ const Featured = () => {
               Shop Now
             </button>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

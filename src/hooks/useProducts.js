@@ -21,6 +21,9 @@ export const useProduct = (id) => {
     queryKey: ["product", id],
     queryFn: () => singleProducts(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
   });
 };
 export const useRelatedProduct = (relatedCategory) => {
@@ -28,6 +31,9 @@ export const useRelatedProduct = (relatedCategory) => {
     queryKey: ["product", relatedCategory],
     queryFn: () => relatedProducts(relatedCategory),
     enabled: !!relatedCategory,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 60,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -35,7 +41,6 @@ export const useCategory = (category) => {
   return useQuery({
     queryKey: ["products", category],
     queryFn: () => productsCategory(category),
-
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 60,
     refetchOnWindowFocus: false,

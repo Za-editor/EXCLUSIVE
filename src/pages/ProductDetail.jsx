@@ -140,20 +140,6 @@ const handleClick = (index) => {
             </div>
           )}
 
-          {/* Size */}
-          <div>
-            <h4 className="font-medium text-sm mb-1">Size:</h4>
-            <div className="flex gap-2">
-              {["XS", "S", "M", "L", "XL"].map((size) => (
-                <button
-                  key={size}
-                  className="border px-3 py-1 rounded hover:bg-black hover:text-white text-sm"
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
 
           {/* Quantity & Buy */}
           <div className="flex items-center gap-4 mt-4">
