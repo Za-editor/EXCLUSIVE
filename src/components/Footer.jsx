@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -8,7 +9,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {/* Exclusive / Subscribe */}
           <div>
-            <h2 className="text-[24px] font-bold mb-6">Exclusive</h2>
+            <Link to={"/"}>
+              <h2 className="text-[24px] font-bold mb-6 cursor-pointer hover:text-gray-400 ease-in-out duration-400">Exclusive</h2>
+            </Link>
+
             <p className="mb-6 text-[20px]">Subscribe</p>
             <p className="text-gray-400 text-[16px] mb-4">
               Get 10% off your first order
@@ -42,11 +46,21 @@ const Footer = () => {
           <div>
             <h2 className="text-[24px] font-bold mb-6">Account</h2>
             <ul className="text-[16px] space-y-4 text-gray-400">
-              <li className="">My Account</li>
-              <li>Login / Register</li>
-              <li>Cart</li>
-              <li>Wishlist</li>
-              <li>Shop</li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/account"}>My Account</Link>
+              </li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/login"}>Login </Link>
+              </li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/cart"}>Cart</Link>
+              </li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/wishlist"}>Wishlist</Link>
+              </li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/products"}>Shop</Link>
+              </li>
             </ul>
           </div>
 
@@ -54,10 +68,19 @@ const Footer = () => {
           <div>
             <h2 className="text-[24px] font-bold mb-6">Quick Link</h2>
             <ul className="text-[16px] space-y-4 text-gray-400">
-              <li>Privacy Policy</li>
-              <li>Terms Of Use</li>
-              <li>FAQ</li>
-              <li>Contact</li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/"}>Home</Link>
+              </li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/contact"}>Contact</Link>
+              </li>
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/about"}>About</Link>
+              </li>
+
+              <li className="hover:text-white cursor-pointer ease-in-out duration-400">
+                <Link to={"/signup"}>Sign Up</Link>
+              </li>
             </ul>
           </div>
 

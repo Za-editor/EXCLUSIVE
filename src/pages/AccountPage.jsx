@@ -1,7 +1,12 @@
-import React from "react";
-import Button from "../components/ui/Button";
+import React, { useState } from "react";
+
+
+import { MyAccount, AddressBook, PaymentOptions,MyWishlist,ProfileForm } from "../components/AccountSection";
 
 const AccountPage = () => {
+
+
+ const [activeSection, setActiveSection] = useState("overview");
   return (
     <div className="container mx-auto px-4 md:px-8 lg:px-16">
       {/* Breadcrumb & Welcome */}
@@ -23,13 +28,41 @@ const AccountPage = () => {
         {/* Sidebar Menu */}
         <div className="w-full md:w-1/3 lg:w-1/4 bg-white md:bg-transparent rounded-lg p-5 md:p-0 shadow md:shadow-none">
           {/* Manage account */}
+          <p className="text-black text-lg font-semibold">Account Overview</p>
+          <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
+            <p
+              onClick={() => setActiveSection("overview")}
+              className={`cursor-pointer hover:text-red-500 transition ${
+                activeSection === "overview" ? "text-red-500" : ""
+              }`}
+            >
+              My Account
+            </p>
+          </div>
           <p className="text-black text-lg font-semibold">Manage My Account</p>
           <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
-            <p className="text-red-500 cursor-pointer">My Profile</p>
-            <p className="cursor-pointer hover:text-red-500 transition">
+            <p
+              onClick={() => setActiveSection("profile")}
+              className={`cursor-pointer hover:text-red-500 transition ${
+                activeSection === "profile" ? "text-red-500" : ""
+              }`}
+            >
+              My Profile
+            </p>
+            <p
+              onClick={() => setActiveSection("address")}
+              className={`cursor-pointer hover:text-red-500 transition ${
+                activeSection === "address" ? "text-red-500" : ""
+              }`}
+            >
               Address Book
             </p>
-            <p className="cursor-pointer hover:text-red-500 transition">
+            <p
+              onClick={() => setActiveSection("payment")}
+              className={`cursor-pointer hover:text-red-500 transition ${
+                activeSection === "payment" ? "text-red-500" : ""
+              }`}
+            >
               My Payment Options
             </p>
           </div>
@@ -47,90 +80,25 @@ const AccountPage = () => {
 
           {/* Wishlist */}
           <p className="text-black text-lg font-semibold">My Wishlist</p>
+          <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
+            <p
+              onClick={() => setActiveSection("wishlist")}
+              className={`cursor-pointer hover:text-red-500 transition ${
+                activeSection === "wishlist" ? "text-red-500" : ""
+              }`}
+            >
+              Wishlist
+            </p>
+          </div>
         </div>
 
         {/* Profile Form */}
         <div className="w-full md:w-2/3 bg-white p-5 sm:p-8 md:p-10 rounded-lg shadow-md">
-          <h2 className="text-lg text-red-500 font-semibold mb-6">
-            Edit Your Profile
-          </h2>
-          <form>
-            {/* Name Inputs */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-gray-700 mb-2">First Name</label>
-                <input
-                  type="text"
-                  placeholder="Fawas"
-                  className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 mb-2">Last Name</label>
-                <input
-                  type="text"
-                  placeholder="Md"
-                  className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-                />
-              </div>
-            </div>
-
-            {/* Email & Address */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
-              <div>
-                <label className="block text-gray-700 mb-2">Email</label>
-                <input
-                  type="email"
-                  placeholder="example@gmail.com"
-                  className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 mb-2">Address</label>
-                <input
-                  type="text"
-                  placeholder="Kingston 223, Abuja, Nigeria"
-                  className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-                />
-              </div>
-            </div>
-
-            {/* Password Change */}
-            <div className="mt-6 space-y-5">
-              <label className="block text-gray-700 mb-2">
-                Password Changes
-              </label>
-              <input
-                type="password"
-                placeholder="Current Password"
-                className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-              />
-              <input
-                type="password"
-                placeholder="New Password"
-                className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-              />
-              <input
-                type="password"
-                placeholder="Confirm New Password"
-                className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-              />
-            </div>
-
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row justify-end gap-4 mt-6">
-              <button
-                type="button"
-                className="text-gray-600 hover:text-gray-400 transition"
-              >
-                Cancel
-              </button>
-              <Button
-                title="Save Changes"
-                classes="bg-[#DB4444] text-white px-6 py-3 rounded-md hover:bg-[#DB4456] transition duration-300"
-              />
-            </div>
-          </form>
+          {activeSection === "profile" && <ProfileForm />}
+          {activeSection === "overview" && <MyAccount />}
+          {activeSection === "address" && <AddressBook />}
+          {activeSection === "payment" && <PaymentOptions />}
+          {activeSection === "wishlist" && <MyWishlist />}
         </div>
       </div>
     </div>

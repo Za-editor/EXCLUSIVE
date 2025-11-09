@@ -1,9 +1,28 @@
 import { supabase } from "../lib/supabase-client";
 
 // Email Sign up
-export const signUpWithEmail = async (email, password) => {
-  const { data, error } = await supabase.auth.signUp({ email, password });
+export const signUpWithEmail = async (email, password, name) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { name },
+    },
+  });
+
   if (error) throw error;
+
+  const user = data.user;
+  if (user) {
+    await supabase.from("profiles").insert([
+      {
+        id: user.id,
+        name,
+        email: user.email,
+      },
+    ]);
+  }
+
   return data;
 };
 
@@ -25,16 +44,18 @@ export const signInWithGoogle = async () => {
       redirectTo: window.location.origin,
     },
   });
-    if (error) throw error;
+  if (error) throw error;
 };
-
 
 // Sign Out
 export const signOut = async () => {
-    const {error} = await supabase.auth.signOut()
-    if (error) throw error;
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error("Error signing out:", error.message);
+  } else {
+    console.log("User signed out successfully");
+  }
 };
-
 
 // Listen to auth state changes
 export const onAuthStateChange = (callback) => {
