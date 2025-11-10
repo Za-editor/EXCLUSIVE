@@ -1,12 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase-client";
 
 
 import { MyAccount, AddressBook, PaymentOptions,MyWishlist,ProfileForm } from "../components/AccountSection";
+import { useAuth } from "../hooks/useAuth";
 
 const AccountPage = () => {
+  const [activeSection, setActiveSection] = useState("overview");
+  
+    const { user } = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [formData, setFormData] = useState({
+      first_name: "",
+      last_name: "",
+      email: "",
+      address: "",
+      phone: "",
+      city: "",
+      state: "",
+      country: "",
+      postal_code: "",
+    });
 
+    // Fetch user profile
+    useEffect(() => {
+      const fetchProfile = async () => {
+        if (!user) return;
 
- const [activeSection, setActiveSection] = useState("overview");
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching profile:", error.message);
+        } else if (data) {
+          setFormData({
+            first_name: data.first_name || "",
+            last_name: data.last_name || "",
+            email: data.email || user.email || "",
+            address: data.address || "",
+            phone: data.phone || "",
+            city: data.city || "",
+            state: data.state || "",
+            country: data.country || "",
+            postal_code: data.postal_code || "",
+          });
+        }
+
+        setLoading(false);
+      };
+
+      fetchProfile();
+    }, [user]);
+  console.log(formData);
+  
   return (
     <div className="container mx-auto px-4 md:px-8 lg:px-16">
       {/* Breadcrumb & Welcome */}

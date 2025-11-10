@@ -25,22 +25,29 @@ const Navbar = () => {
 
   // Fetch user profile from Supabase
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user) {
-        setProfile(null);
-        return;
-      }
+    if (!user) {
+      setProfile(null);
+      return;
+    }
 
+    const fetchProfile = async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("name")
+        .select("first_name, last_name")
         .eq("id", user.id)
         .single();
 
       if (error) {
-        console.error("Profile fetch error:", error.message);
+        console.error("Error fetching profile:", error.message);
         setProfile(null);
         return;
+      }
+
+      // Fallback for Google users (metadata.name)
+      if (!data.first_name && user.user_metadata?.name) {
+        const [first, last] = user.user_metadata.name.split(" ");
+        data.first_name = first;
+        data.last_name = last || "";
       }
 
       setProfile(data);
@@ -56,7 +63,9 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const firstName =profile?.name.split(" ")[0];
+  const firstName = profile?.name.split(" ")[0];
+  console.log(profile);
+  
 
   return (
     <>

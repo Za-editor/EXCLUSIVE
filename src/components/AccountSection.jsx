@@ -1,21 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../components/ui/Button";
+import { supabase } from "../lib/supabase-client";
+import { useAuth } from "../hooks/useAuth";
 
 //   MY PROFILE
 export const ProfileForm = () => {
+    const { user } = useAuth();
+    const [loading, setLoading] = useState(false)
+    const [formData, setFormData] = useState({
+      first_name: "",
+      last_name: "",
+      email: "",
+      address: "",
+      phone: "",
+      city: "",
+      state: "",
+      country: "",
+      postal_code: "",
+    });
+
+    //Handle Change
+    const handleChange = async (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({...prev, [name]: value}))
+    } 
+
+    // Handle save
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (!user) return;
+        setLoading(true);
+
+        const { error } = await supabase.from("profiles").upsert({
+            id: user.id,
+            ...formData,
+            updated_at: new Date()
+        })
+        setLoading(false);
+
+        if (error) {
+            console.error("Error updating profile", error.message);
+            alert("Error updating profile")
+            
+        } else {
+            alert("Profile updated successfully")
+        }
+    }
+
+    if(loading) return <p>Loading ...</p> 
   return (
     <div className="">
       <h2 className="text-lg text-red-500 font-semibold mb-6">
         Edit Your Profile
       </h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         {/* Name Inputs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-gray-700 mb-2">First Name</label>
             <input
               type="text"
-              placeholder="Fawas"
+              name="firstName"
+              value={formData.first_name}
+              onChange={handleChange}
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
@@ -23,7 +70,9 @@ export const ProfileForm = () => {
             <label className="block text-gray-700 mb-2">Last Name</label>
             <input
               type="text"
-              placeholder="Md"
+              name="lastName"
+              value={formData.last_name}
+              onChange={handleChange}
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
@@ -35,7 +84,9 @@ export const ProfileForm = () => {
             <label className="block text-gray-700 mb-2">Email</label>
             <input
               type="email"
-              placeholder="example@gmail.com"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
@@ -43,44 +94,83 @@ export const ProfileForm = () => {
             <label className="block text-gray-700 mb-2">Address</label>
             <input
               type="text"
-              placeholder="Kingston 223, Abuja, Nigeria"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
         </div>
 
-        {/* Password Change */}
-        <div className="mt-6 space-y-5">
-          <label className="block text-gray-700 mb-2">Password Changes</label>
-          <input
-            type="password"
-            placeholder="Current Password"
-            className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-          />
-          <input
-            type="password"
-            placeholder="New Password"
-            className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-          />
-          <input
-            type="password"
-            placeholder="Confirm New Password"
-            className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
-          />
+        {/* Phone, City, State, Country, Postal Code */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
+          <div>
+            <label className="block text-gray-700 mb-2">Phone</label>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">City</label>
+            <input
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">State/Province</label>
+            <input
+              type="text"
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Country</label>
+            <input
+              type="text"
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+              className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Postal Code</label>
+            <input
+              type="text"
+              name="postalCode"
+              value={formData.postal_code}
+              onChange={handleChange}
+              className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
+            />
+          </div>
         </div>
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-end gap-4 mt-6">
           <button
             type="button"
+            onClick={() => window.history.back()}
             className="text-gray-600 hover:text-gray-400 transition"
           >
             Cancel
           </button>
-          <Button
-            title="Save Changes"
-            classes="bg-[#DB4444] text-white px-6 py-3 rounded-md hover:bg-[#DB4456] transition duration-300"
-          />
+          <button
+            type="submit"
+            className="bg-[#DB4444] text-white px-6 py-3 rounded-md hover:bg-[#DB4456] transition duration-300"
+          >
+            Save Changes
+          </button>
         </div>
       </form>
     </div>
@@ -96,6 +186,7 @@ export const MyAccount = ({ profile }) => {
       </h2>
 
       <div className="grid md:grid-cols-2 gap-4 text-gray-700">
+        {/* Full Name */}
         <div>
           <p className="font-medium">Full Name</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
@@ -103,6 +194,7 @@ export const MyAccount = ({ profile }) => {
           </p>
         </div>
 
+        {/* Email */}
         <div>
           <p className="font-medium">Email</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
@@ -110,6 +202,7 @@ export const MyAccount = ({ profile }) => {
           </p>
         </div>
 
+        {/* Phone */}
         <div>
           <p className="font-medium">Phone Number</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
@@ -117,16 +210,68 @@ export const MyAccount = ({ profile }) => {
           </p>
         </div>
 
+        {/* Gender */}
+        <div>
+          <p className="font-medium">Gender</p>
+          <p className="bg-gray-50 p-2 rounded-md mt-1">
+            {profile?.gender || "—"}
+          </p>
+        </div>
+
+        {/* Date of Birth */}
+        <div>
+          <p className="font-medium">Date of Birth</p>
+          <p className="bg-gray-50 p-2 rounded-md mt-1">
+            {profile?.dob || "—"}
+          </p>
+        </div>
+
+        {/* Address */}
         <div>
           <p className="font-medium">Address</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
             {profile?.address || "—"}
           </p>
         </div>
+
+        {/* City */}
+        <div>
+          <p className="font-medium">City</p>
+          <p className="bg-gray-50 p-2 rounded-md mt-1">
+            {profile?.city || "—"}
+          </p>
+        </div>
+
+        {/* State */}
+        <div>
+          <p className="font-medium">State/Province</p>
+          <p className="bg-gray-50 p-2 rounded-md mt-1">
+            {profile?.state || "—"}
+          </p>
+        </div>
+
+        {/* Country */}
+        <div>
+          <p className="font-medium">Country</p>
+          <p className="bg-gray-50 p-2 rounded-md mt-1">
+            {profile?.country || "—"}
+          </p>
+        </div>
+
+        {/* Postal Code */}
+        <div>
+          <p className="font-medium">Postal Code</p>
+          <p className="bg-gray-50 p-2 rounded-md mt-1">
+            {profile?.postalCode || "—"}
+          </p>
+        </div>
+
+
       </div>
     </div>
   );
 };
+
 
 //ADDRESS BOOK
 

@@ -4,12 +4,12 @@ import { FaGooglePlusG } from "react-icons/fa";
 import { signUpWithEmail, signInWithGoogle } from "../services/auth";
 
 const SignUp = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ first_name: "", last_name: "", email: "", password: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signUpWithEmail(form.email, form.password, form.name);
+      await signUpWithEmail(form.email, form.password, form.first_name, form.last_name);
       alert("Account created! Check your email to verify.");
     } catch (err) {
       alert(err.message);
@@ -38,10 +38,17 @@ const SignUp = () => {
           <form className="space-y-5" onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="Name"
+              placeholder="First Name"
               className="w-full border-b border-gray-300 py-2 focus:border-gray-800 outline-none"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              value={form.first_name}
+              onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="w-full border-b border-gray-300 py-2 focus:border-gray-800 outline-none"
+              value={form.last_name}
+              onChange={(e) => setForm({ ...form, last_name: e.target.value })}
             />
             <input
               type="email"
