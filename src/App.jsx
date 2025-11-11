@@ -12,48 +12,51 @@ import CartPage from "./pages/CartPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetail from "./pages/ProductDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { AppProvider } from "./context/AppContext";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/products/:category" element={<ProductsPage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route
-              path="/products/:category/:name/:id"
-              element={<ProductDetail />}
-            />
+      <AppProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/products/:category" element={<ProductsPage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route
+                path="/products/:category/:name/:id"
+                element={<ProductDetail />}
+              />
 
-            {/*Protected Routes */}
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <AccountPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/checkout"
-              element={
-                <ProtectedRoute>
-                  <CheckoutPage />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+              {/*Protected Routes */}
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <AccountPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute>
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AppProvider>
     </QueryClientProvider>
   );
 }

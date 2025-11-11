@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Menu,
@@ -13,48 +13,14 @@ import {
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { signOut } from "../services/auth";
-import { supabase } from "../lib/supabase-client";
+import { useAppContext } from "../hooks/useAppContext"; 
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [profile, setProfile] = useState(null);
-
   const { user } = useAuth();
+  const { profile, displayName } = useAppContext(); 
   const navigate = useNavigate();
-
-  // Fetch user profile from Supabase
-  useEffect(() => {
-    if (!user) {
-      setProfile(null);
-      return;
-    }
-
-    const fetchProfile = async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("first_name, last_name")
-        .eq("id", user.id)
-        .single();
-
-      if (error) {
-        console.error("Error fetching profile:", error.message);
-        setProfile(null);
-        return;
-      }
-
-      // Fallback for Google users (metadata.name)
-      if (!data.first_name && user.user_metadata?.name) {
-        const [first, last] = user.user_metadata.name.split(" ");
-        data.first_name = first;
-        data.last_name = last || "";
-      }
-
-      setProfile(data);
-    };
-
-    fetchProfile();
-  }, [user]);
 
   // Logout handler
   const handleLogout = async () => {
@@ -63,9 +29,7 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const firstName = profile?.first_name;
-  console.log(profile);
-  
+
 
   return (
     <>
@@ -121,7 +85,7 @@ const Navbar = () => {
             >
               <User />
               <span className="hidden md:inline font-medium">
-                {firstName ? `Hi ${firstName}` : "Account"}
+                {displayName ? `Hi ${displayName}` : "Account"}
               </span>
               <ChevronDown
                 className={`transition-transform duration-200 ${
@@ -161,7 +125,7 @@ const Navbar = () => {
                         className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-50"
                       >
                         <User size={16} />
-                        {firstName || "My Account"}
+                        {displayName || "My Account"}
                       </Link>
 
                       <Link

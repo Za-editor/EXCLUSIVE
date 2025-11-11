@@ -1,6 +1,4 @@
-// src/pages/AccountPage.jsx
-import React, { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase-client";
+import React, { useState } from "react";
 import {
   MyAccount,
   AddressBook,
@@ -9,57 +7,16 @@ import {
   ProfileForm,
 } from "../components/AccountSection";
 import { useAuth } from "../hooks/useAuth";
+import { useAppContext } from "../hooks/useAppContext";
 
 const AccountPage = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const { user, loading: authLoading } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    address: "",
-    phone: "",
-    city: "",
-    state: "",
-    country: "",
-    postal_code: "",
-  });
+  const { profile, displayName, loading: profileLoading } = useAppContext();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user) return;
-      setLoading(true);
+  const loading = authLoading || profileLoading;
 
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
-
-      if (error) {
-        console.error("Error fetching profile:", error.message);
-      } else if (data) {
-        setFormData({
-          first_name: data.first_name || "",
-          last_name: data.last_name || "",
-          email: data.email || user.email || "",
-          address: data.address || "",
-          phone: data.phone || "",
-          city: data.city || "",
-          state: data.state || "",
-          country: data.country || "",
-          postal_code: data.postal_code || "",
-        });
-      }
-
-      setLoading(false);
-    };
-
-    if (!authLoading && user) fetchProfile();
-  }, [user, authLoading]);
-
-  if (loading || authLoading) {
+  if (loading) {
     return (
       <p className="text-center py-10 text-gray-500">Loading your account...</p>
     );
@@ -78,7 +35,7 @@ const AccountPage = () => {
             Welcome!{" "}
           </span>
           <span className="text-red-700 font-medium">
-            {formData.first_name || formData.name || user.email?.split("@")[0]}
+            {displayName || user.email?.split("@")[0]}
           </span>
         </div>
       </div>
@@ -98,6 +55,7 @@ const AccountPage = () => {
               My Account
             </p>
           </div>
+
           <p className="text-black text-lg font-semibold">Manage My Account</p>
           <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
             <p
@@ -125,6 +83,7 @@ const AccountPage = () => {
               My Payment Options
             </p>
           </div>
+
           <p className="text-black text-lg font-semibold">My Wishlist</p>
           <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
             <p
@@ -140,10 +99,8 @@ const AccountPage = () => {
 
         {/* Content Area */}
         <div className="w-full md:w-2/3 bg-white p-5 sm:p-8 md:p-10 rounded-lg shadow-md">
-          {activeSection === "profile" && (
-            <ProfileForm user={user} formData={formData} />
-          )}
-          {activeSection === "overview" && <MyAccount formData={formData} />}
+          {activeSection === "profile" && <ProfileForm user={user} />}
+          {activeSection === "overview" && <MyAccount profile={profile} />}
           {activeSection === "address" && <AddressBook />}
           {activeSection === "payment" && <PaymentOptions />}
           {activeSection === "wishlist" && <MyWishlist />}

@@ -188,8 +188,8 @@ export const ProfileForm = () => {
 };
 //   MY ACCOUNT
 
-export const MyAccount = ({ formData }) => {
-  console.log(formData);
+export const MyAccount = ({ profile }) => {
+
   
   return (
     <div className="">
@@ -202,7 +202,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Full Name</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.first_name +" "+ formData?.last_name || "—"}
+            {profile?.first_name +" "+ profile?.last_name || "—"}
           </p>
         </div>
 
@@ -210,7 +210,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Email</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.email || "—"}
+            {profile?.email || "—"}
           </p>
         </div>
 
@@ -218,7 +218,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Phone Number</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.phone || "—"}
+            {profile?.phone || "—"}
           </p>
         </div>
 
@@ -226,7 +226,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Gender</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.gender || "—"}
+            {profile?.gender || "—"}
           </p>
         </div>
 
@@ -234,7 +234,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Date of Birth</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.dob || "—"}
+            {profile?.dob || "—"}
           </p>
         </div>
 
@@ -242,7 +242,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Address</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.address || "—"}
+            {profile?.address || "—"}
           </p>
         </div>
 
@@ -250,7 +250,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">City</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.city || "—"}
+            {profile?.city || "—"}
           </p>
         </div>
 
@@ -258,7 +258,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">State/Province</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.state || "—"}
+            {profile?.state || "—"}
           </p>
         </div>
 
@@ -266,7 +266,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Country</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.country || "—"}
+            {profile?.country || "—"}
           </p>
         </div>
 
@@ -274,7 +274,7 @@ export const MyAccount = ({ formData }) => {
         <div>
           <p className="font-medium">Postal Code</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {formData?.postal_code || "—"}
+            {profile?.postal_code || "—"}
           </p>
         </div>
 
