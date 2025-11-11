@@ -5,54 +5,56 @@ import { useAuth } from "../hooks/useAuth";
 
 //   MY PROFILE
 export const ProfileForm = () => {
-    const { user } = useAuth();
-    const [loading, setLoading] = useState(false)
-    const [formData, setFormData] = useState({
-      first_name: "",
-      last_name: "",
-      email: "",
-      address: "",
-      phone: "",
-      city: "",
-      state: "",
-      country: "",
-      postal_code: "",
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    address: "",
+    phone: "",
+    city: "",
+    state: "",
+    country: "",
+    postal_code: "",
+  });
+
+  // Handle change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) return;
+    setLoading(true);
+
+    const { error } = await supabase.from("profiles").upsert({
+      id: user.id,
+      ...formData,
+      updated_at: new Date(),
     });
 
-    //Handle Change
-    const handleChange = async (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({...prev, [name]: value}))
-    } 
+    setLoading(false);
 
-    // Handle save
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (!user) return;
-        setLoading(true);
-
-        const { error } = await supabase.from("profiles").upsert({
-            id: user.id,
-            ...formData,
-            updated_at: new Date()
-        })
-        setLoading(false);
-
-        if (error) {
-            console.error("Error updating profile", error.message);
-            alert("Error updating profile")
-            
-        } else {
-            alert("Profile updated successfully")
-        }
+    if (error) {
+      console.error("Error updating profile:", error.message);
+      alert("Error updating profile");
+    } else {
+      alert("Profile updated successfully!");
     }
+  };
 
-    if(loading) return <p>Loading ...</p> 
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <div className="">
+    <div>
       <h2 className="text-lg text-red-500 font-semibold mb-6">
         Edit Your Profile
       </h2>
+
       <form onSubmit={handleSubmit}>
         {/* Name Inputs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -60,17 +62,18 @@ export const ProfileForm = () => {
             <label className="block text-gray-700 mb-2">First Name</label>
             <input
               type="text"
-              name="firstName"
+              name="first_name"
               value={formData.first_name}
               onChange={handleChange}
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
+
           <div>
             <label className="block text-gray-700 mb-2">Last Name</label>
             <input
               type="text"
-              name="lastName"
+              name="last_name"
               value={formData.last_name}
               onChange={handleChange}
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
@@ -90,6 +93,7 @@ export const ProfileForm = () => {
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
+
           <div>
             <label className="block text-gray-700 mb-2">Address</label>
             <input
@@ -114,6 +118,7 @@ export const ProfileForm = () => {
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
+
           <div>
             <label className="block text-gray-700 mb-2">City</label>
             <input
@@ -124,6 +129,7 @@ export const ProfileForm = () => {
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
+
           <div>
             <label className="block text-gray-700 mb-2">State/Province</label>
             <input
@@ -134,6 +140,7 @@ export const ProfileForm = () => {
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
+
           <div>
             <label className="block text-gray-700 mb-2">Country</label>
             <input
@@ -144,11 +151,12 @@ export const ProfileForm = () => {
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
             />
           </div>
+
           <div>
             <label className="block text-gray-700 mb-2">Postal Code</label>
             <input
               type="text"
-              name="postalCode"
+              name="postal_code"
               value={formData.postal_code}
               onChange={handleChange}
               className="bg-gray-100 rounded-md p-3 focus:outline-none w-full text-sm"
@@ -165,11 +173,13 @@ export const ProfileForm = () => {
           >
             Cancel
           </button>
+
           <button
             type="submit"
+            disabled={loading}
             className="bg-[#DB4444] text-white px-6 py-3 rounded-md hover:bg-[#DB4456] transition duration-300"
           >
-            Save Changes
+            {loading ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </form>
@@ -178,7 +188,9 @@ export const ProfileForm = () => {
 };
 //   MY ACCOUNT
 
-export const MyAccount = ({ profile }) => {
+export const MyAccount = ({ formData }) => {
+  console.log(formData);
+  
   return (
     <div className="">
       <h2 className="text-xl font-semibold mb-4 text-gray-800">
@@ -190,7 +202,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Full Name</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.name || "—"}
+            {formData?.first_name +" "+ formData?.last_name || "—"}
           </p>
         </div>
 
@@ -198,7 +210,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Email</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.email || "—"}
+            {formData?.email || "—"}
           </p>
         </div>
 
@@ -206,7 +218,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Phone Number</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.phone || "—"}
+            {formData?.phone || "—"}
           </p>
         </div>
 
@@ -214,7 +226,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Gender</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.gender || "—"}
+            {formData?.gender || "—"}
           </p>
         </div>
 
@@ -222,7 +234,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Date of Birth</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.dob || "—"}
+            {formData?.dob || "—"}
           </p>
         </div>
 
@@ -230,7 +242,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Address</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.address || "—"}
+            {formData?.address || "—"}
           </p>
         </div>
 
@@ -238,7 +250,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">City</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.city || "—"}
+            {formData?.city || "—"}
           </p>
         </div>
 
@@ -246,7 +258,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">State/Province</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.state || "—"}
+            {formData?.state || "—"}
           </p>
         </div>
 
@@ -254,7 +266,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Country</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.country || "—"}
+            {formData?.country || "—"}
           </p>
         </div>
 
@@ -262,7 +274,7 @@ export const MyAccount = ({ profile }) => {
         <div>
           <p className="font-medium">Postal Code</p>
           <p className="bg-gray-50 p-2 rounded-md mt-1">
-            {profile?.postalCode || "—"}
+            {formData?.postal_code || "—"}
           </p>
         </div>
 

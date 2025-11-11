@@ -63,7 +63,7 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const firstName = profile?.name.split(" ")[0];
+  const firstName = profile?.first_name;
   console.log(profile);
   
 

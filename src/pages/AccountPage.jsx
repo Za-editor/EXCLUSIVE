@@ -1,61 +1,70 @@
+// src/pages/AccountPage.jsx
 import React, { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase-client";
-
-
-import { MyAccount, AddressBook, PaymentOptions,MyWishlist,ProfileForm } from "../components/AccountSection";
+import {
+  MyAccount,
+  AddressBook,
+  PaymentOptions,
+  MyWishlist,
+  ProfileForm,
+} from "../components/AccountSection";
 import { useAuth } from "../hooks/useAuth";
 
 const AccountPage = () => {
   const [activeSection, setActiveSection] = useState("overview");
-  
-    const { user } = useAuth();
-    const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState({
-      first_name: "",
-      last_name: "",
-      email: "",
-      address: "",
-      phone: "",
-      city: "",
-      state: "",
-      country: "",
-      postal_code: "",
-    });
+  const { user, loading: authLoading } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    address: "",
+    phone: "",
+    city: "",
+    state: "",
+    country: "",
+    postal_code: "",
+  });
 
-    // Fetch user profile
-    useEffect(() => {
-      const fetchProfile = async () => {
-        if (!user) return;
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+      setLoading(true);
 
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .single();
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
 
-        if (error) {
-          console.error("Error fetching profile:", error.message);
-        } else if (data) {
-          setFormData({
-            first_name: data.first_name || "",
-            last_name: data.last_name || "",
-            email: data.email || user.email || "",
-            address: data.address || "",
-            phone: data.phone || "",
-            city: data.city || "",
-            state: data.state || "",
-            country: data.country || "",
-            postal_code: data.postal_code || "",
-          });
-        }
+      if (error) {
+        console.error("Error fetching profile:", error.message);
+      } else if (data) {
+        setFormData({
+          first_name: data.first_name || "",
+          last_name: data.last_name || "",
+          email: data.email || user.email || "",
+          address: data.address || "",
+          phone: data.phone || "",
+          city: data.city || "",
+          state: data.state || "",
+          country: data.country || "",
+          postal_code: data.postal_code || "",
+        });
+      }
 
-        setLoading(false);
-      };
+      setLoading(false);
+    };
 
-      fetchProfile();
-    }, [user]);
-  console.log(formData);
-  
+    if (!authLoading && user) fetchProfile();
+  }, [user, authLoading]);
+
+  if (loading || authLoading) {
+    return (
+      <p className="text-center py-10 text-gray-500">Loading your account...</p>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 md:px-8 lg:px-16">
       {/* Breadcrumb & Welcome */}
@@ -68,7 +77,9 @@ const AccountPage = () => {
           <span className="cursor-pointer hover:text-gray-700 text-black">
             Welcome!{" "}
           </span>
-          <span className="text-red-700 font-medium">Md Fawas</span>
+          <span className="text-red-700 font-medium">
+            {formData.first_name || formData.name || user.email?.split("@")[0]}
+          </span>
         </div>
       </div>
 
@@ -76,7 +87,6 @@ const AccountPage = () => {
       <div className="flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24 md:my-10">
         {/* Sidebar Menu */}
         <div className="w-full md:w-1/3 lg:w-1/4 bg-white md:bg-transparent rounded-lg p-5 md:p-0 shadow md:shadow-none">
-          {/* Manage account */}
           <p className="text-black text-lg font-semibold">Account Overview</p>
           <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
             <p
@@ -115,19 +125,6 @@ const AccountPage = () => {
               My Payment Options
             </p>
           </div>
-
-          {/* Orders */}
-          <p className="text-black text-lg font-semibold">My Orders</p>
-          <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
-            <p className="cursor-pointer hover:text-red-500 transition">
-              My Returns
-            </p>
-            <p className="cursor-pointer hover:text-red-500 transition">
-              My Cancellations
-            </p>
-          </div>
-
-          {/* Wishlist */}
           <p className="text-black text-lg font-semibold">My Wishlist</p>
           <div className="text-gray-500 ml-4 md:ml-8 space-y-2 mt-2 mb-5">
             <p
@@ -141,10 +138,12 @@ const AccountPage = () => {
           </div>
         </div>
 
-        {/* Profile Form */}
+        {/* Content Area */}
         <div className="w-full md:w-2/3 bg-white p-5 sm:p-8 md:p-10 rounded-lg shadow-md">
-          {activeSection === "profile" && <ProfileForm />}
-          {activeSection === "overview" && <MyAccount />}
+          {activeSection === "profile" && (
+            <ProfileForm user={user} formData={formData} />
+          )}
+          {activeSection === "overview" && <MyAccount formData={formData} />}
           {activeSection === "address" && <AddressBook />}
           {activeSection === "payment" && <PaymentOptions />}
           {activeSection === "wishlist" && <MyWishlist />}

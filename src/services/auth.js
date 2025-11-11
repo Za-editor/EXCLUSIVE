@@ -13,18 +13,6 @@ export const signUpWithEmail = async (email, password,first_name= "", last_name 
   });
 
   if (error) throw error;
-
-  const user = data.user;
-  if (user) {
-    await supabase.from("profiles").insert([
-      {
-        id: user.id,
-        name,
-        email: user.email,
-      },
-    ]);
-  }
-
   return data;
 };
 

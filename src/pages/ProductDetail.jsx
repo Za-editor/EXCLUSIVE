@@ -143,14 +143,14 @@ const handleClick = (index) => {
 
           {/* Quantity & Buy */}
           <div className="flex items-center gap-4 mt-4">
-            <div className="flex border rounded-md">
+            <div className="flex border border-gray-300 rounded-md">
               <button
                 className="px-3 py-1"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
               >
                 -
               </button>
-              <span className="px-4 py-1 border-x">{quantity}</span>
+              <span className="px-4 py-1 border-x border-gray-200">{quantity}</span>
               <button
                 className="px-3 py-1"
                 onClick={() => setQuantity(quantity + 1)}
@@ -165,7 +165,7 @@ const handleClick = (index) => {
 
           {/* Info Boxes */}
           <div className="mt-6 space-y-2">
-            <div className="flex items-center gap-3 border rounded p-3">
+            <div className="flex items-center gap-3 border border-gray-200 rounded p-3">
               <FaTruck className="text-gray-600" />
               <div>
                 <p className="text-sm font-medium">Free Delivery</p>
@@ -174,7 +174,7 @@ const handleClick = (index) => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3 border rounded p-3">
+            <div className="flex items-center gap-3 border border-gray-200 rounded p-3">
               <FaUndo className="text-gray-600" />
               <div>
                 <p className="text-sm font-medium">Return Delivery</p>
