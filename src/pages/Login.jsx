@@ -1,7 +1,7 @@
 import { FaGooglePlusG } from "react-icons/fa";
 import { signInWithEmail, signInWithGoogle } from "../services/auth";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -92,6 +92,17 @@ const Login = () => {
               <span className="text-sm text-gray-700">Login with Google</span>
             </button>
           </form>
+          <div className="flex items-center gap-4 mt-4">
+            <hr className="flex-1 border-t border-gray-300" />
+            <span className="text-gray-500 text-sm font-medium">OR</span>
+            <hr className="flex-1 border-t border-gray-300" />
+          </div>
+          <div className="flex justify-between mt-4">
+            <p className="">Dont have an Account?</p>
+            <Link to={"/signup"}>
+              <p className="font-bold text-red-500 underline underline-offset-5">Sign Up</p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

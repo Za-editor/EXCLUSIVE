@@ -13,14 +13,16 @@ import {
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { signOut } from "../services/auth";
-import { useAppContext } from "../hooks/useAppContext"; 
+import { useAppContext } from "../hooks/useAppContext";
+import { useCart } from "../hooks/useCartContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useAuth();
-  const { profile, displayName } = useAppContext(); 
+  const { displayName } = useAppContext();
   const navigate = useNavigate();
+  const {cartCount} = useCart()
 
   // Logout handler
   const handleLogout = async () => {
@@ -28,8 +30,6 @@ const Navbar = () => {
     setDropdownOpen(false);
     navigate("/login");
   };
-
-
 
   return (
     <>
@@ -74,8 +74,9 @@ const Navbar = () => {
 
           {/* Icons + Account (Desktop only) */}
           <div className="hidden md:flex items-center gap-5 relative">
-            <Link to={"/cart"}>
+            <Link className="relative" to={"/cart"}>
               <ShoppingCart className="cursor-pointer" />
+              <span className="absolute -top-3 -right-2 text-white bg-red-500 text-xs px-1 rounded-2xl">{cartCount}</span>
             </Link>
 
             {/* Account Dropdown Button */}

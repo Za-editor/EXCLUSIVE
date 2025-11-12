@@ -3,39 +3,60 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaTruck, FaUndo } from "react-icons/fa";
 import ProductCard from "../components/ui/ProductCard";
 import { useProduct, useRelatedProduct } from "../hooks/useProducts";
+import { addToCart } from "../services/cart";
+import { supabase } from "../lib/supabase-client";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [selectedImage, setSelectedImage] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
+  const [message, setMessage] = useState("");
 
   const { data: product, isLoading } = useProduct(id);
-
   const relatedCategory = product?.category;
   const { data: related = [], isLoading: relatedLoading } =
     useRelatedProduct(relatedCategory);
 
- 
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const pathParts = pathname.split("/").filter(Boolean);
   useEffect(() => {
     if (product?.images?.length) {
       setSelectedImage(product.images[0]);
     }
   }, [product]);
- const navigate = useNavigate();
- const { pathname } = useLocation();
-   const pathParts = pathname.split("/").filter(Boolean);
 
-const handleClick = (index) => {
-  const cleanedParts = pathParts.filter(
-    (part) => isNaN(Number(part)) 
-  );
+  const handleClick = (index) => {
+    const cleanedParts = pathParts.filter((part) => isNaN(Number(part)));
+    const newPath =
+      index === -1 ? "/" : "/" + cleanedParts.slice(0, index + 1).join("/");
+    navigate(newPath);
+  };
 
+  const handleAddtoCart = async () => {
+        try {
+          setIsAdding(true);
+          setMessage("");
 
-  const newPath =
-    index === -1 ? "/" : "/" + cleanedParts.slice(0, index + 1).join("/");
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+          if (!user) {
+            setMessage("Please log in to add items to your cart.");
+            return;
+          }
 
-  navigate(newPath);
-};
+          await addToCart(user.id, product, quantity);
+          setMessage("✅ Added to cart!");
+        } catch (error) {
+          console.error("Error adding to cart:", error);
+          setMessage("❌ Failed to add to cart.");
+        } finally {
+          setIsAdding(false);
+          setTimeout(() => setMessage(""), 2000);
+        }
+  }
 
   if (isLoading)
     return <div className="text-center py-10">Loading product...</div>;
@@ -140,7 +161,6 @@ const handleClick = (index) => {
             </div>
           )}
 
-
           {/* Quantity & Buy */}
           <div className="flex items-center gap-4 mt-4">
             <div className="flex border border-gray-300 rounded-md">
@@ -150,7 +170,9 @@ const handleClick = (index) => {
               >
                 -
               </button>
-              <span className="px-4 py-1 border-x border-gray-200">{quantity}</span>
+              <span className="px-4 py-1 border-x border-gray-200">
+                {quantity}
+              </span>
               <button
                 className="px-3 py-1"
                 onClick={() => setQuantity(quantity + 1)}
@@ -158,9 +180,15 @@ const handleClick = (index) => {
                 +
               </button>
             </div>
-            <button className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
-              Buy Now
+            <button
+              onClick={handleAddtoCart}
+              disabled={isAdding}
+              className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+            >
+              {isAdding ? "Adding..." : "Buy Now"}
             </button>
+
+            {message && <p className="text-sm text-gray-600 mt-2">{message}</p>}
           </div>
 
           {/* Info Boxes */}

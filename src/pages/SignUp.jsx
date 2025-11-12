@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FaGooglePlusG } from "react-icons/fa";
 import { signUpWithEmail, signInWithGoogle } from "../services/auth";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [form, setForm] = useState({ first_name: "", last_name: "", email: "", password: "" });
@@ -81,6 +82,19 @@ const SignUp = () => {
               <span className="text-sm text-gray-700">Sign up with Google</span>
             </button>
           </form>
+          <div className="flex items-center gap-4 mt-4">
+            <hr className="flex-1 border-t border-gray-300" />
+            <span className="text-gray-500 text-sm font-medium">OR</span>
+            <hr className="flex-1 border-t border-gray-300" />
+          </div>
+          <div className="flex justify-between mt-4">
+            <p className="">Have an Account?</p>
+            <Link to={"/login"}>
+              <p className="font-bold text-red-500 underline underline-offset-5">
+                Login
+              </p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

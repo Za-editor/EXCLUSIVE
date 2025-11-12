@@ -1,26 +1,32 @@
 import { supabase } from "../lib/supabase-client";
 
+// Ensure a cart exists for a given user
 export const ensureCart = async (userId) => {
   const { data, error } = await supabase
     .from("carts")
     .select("*")
     .eq("user_id", userId)
-    .limit(1);
+    .single(); 
 
-  if (error) throw error;
+  if (error && error.code !== "PGRST116") throw error; 
+
   if (data) return data;
 
+  // Create a new cart if none exists
   const { data: newCart, error: e2 } = await supabase
     .from("carts")
     .insert({ user_id: userId })
     .select()
     .single();
+
   if (e2) throw e2;
   return newCart;
 };
 
+// Get all items in the user's cart
 export const getCartItems = async (userId) => {
   const cart = await ensureCart(userId);
+
   const { data, error } = await supabase
     .from("cart_items")
     .select("*")
@@ -30,20 +36,31 @@ export const getCartItems = async (userId) => {
   return data;
 };
 
+//  Add item to cart 
 export const addToCart = async (userId, product, qty = 1) => {
   const cart = await ensureCart(userId);
 
-  const { data: existing } = await supabase
+ 
+  const imageUrl = product.image || product.images?.[0] || "";
+
+  const { data: existingItems, error: existingError } = await supabase
     .from("cart_items")
     .select("*")
     .eq("cart_id", cart.id)
     .eq("product_id", product.id)
     .limit(1);
 
+  if (existingError) throw existingError;
+
+  const existing = existingItems?.[0];
+
   if (existing) {
     const { data, error } = await supabase
       .from("cart_items")
-      .update({ quantity: existing.quantity + qty, updated_at: new Date() })
+      .update({
+        quantity: existing.quantity + qty,
+        updated_at: new Date(),
+      })
       .eq("id", existing.id)
       .select()
       .single();
@@ -59,6 +76,7 @@ export const addToCart = async (userId, product, qty = 1) => {
         product_snapshot: {
           title: product.title,
           price: product.price,
+          image: imageUrl, 
         },
         quantity: qty,
       })
@@ -70,7 +88,9 @@ export const addToCart = async (userId, product, qty = 1) => {
   }
 };
 
-export const updateCartitems = async (itemId, qty) => {
+
+//  Update item quantity or delete if 0
+export const updateCartItems = async (itemId, qty) => {
   if (qty <= 0) {
     const { error } = await supabase
       .from("cart_items")
@@ -82,26 +102,35 @@ export const updateCartitems = async (itemId, qty) => {
 
   const { data, error } = await supabase
     .from("cart_items")
-    .update({ qty, updated_at: new Date() })
+    .update({ quantity: qty, updated_at: new Date() }) 
     .eq("id", itemId)
     .select()
     .single();
+
   if (error) throw error;
   return data;
 };
 
+// Checkout and move cart items into orders
 export const checkoutCart = async (userId) => {
   const cartItems = await getCartItems(userId);
+
   const total = cartItems.reduce(
-    (sum, index) => sum + index.product_snapshot.price * index.quantity,
+    (sum, item) => sum + item.product_snapshot.price * item.quantity,
     0
   );
 
-  const { data: order } = await supabase
+  const { data: order, error: orderError } = await supabase
     .from("orders")
-    .insert({ user_id: userId, total_amount: total, status: "paid" })
+    .insert({
+      user_id: userId,
+      total_amount: total,
+      status: "paid",
+    })
     .select()
     .single();
+
+  if (orderError) throw orderError;
 
   const inserts = cartItems.map((item) => ({
     order_id: order.id,
@@ -112,6 +141,8 @@ export const checkoutCart = async (userId) => {
   }));
 
   await supabase.from("order_items").insert(inserts);
+
+
   await supabase
     .from("cart_items")
     .delete()
