@@ -1,6 +1,87 @@
 import React from "react";
+import { useCart } from "../hooks/useCartContext";
+import { Link } from "react-router-dom";
+
+const CartItemRow = ({ item }) => {
+  const { updateItem, removeItem } = useCart();
+  const [localQty, setLocalQty] = React.useState(item.quantity);
+
+  // Sync localQty if item quantity changes externally
+  React.useEffect(() => {
+    setLocalQty(item.quantity);
+  }, [item.quantity]);
+
+  const handleBlur = () => {
+    if (localQty < 1) return removeItem(item.id);
+    if (localQty !== item.quantity) updateItem(item.id, localQty);
+  };
+
+  return (
+    <tr className="border-b hover:bg-gray-50 transition">
+      <td className="py-4 px-3 md:px-6 flex items-center gap-4">
+        <img
+          src={item.product_snapshot.image}
+          alt={item.product_snapshot.title}
+          className="w-16 h-16 rounded-md object-cover"
+        />
+        <div className="text-gray-800 font-medium">
+          {item.product_snapshot.title}
+        </div>
+      </td>
+      <td className="py-4 px-3 md:px-6 text-gray-700">
+        ${item.product_snapshot.price.toFixed(2)}
+      </td>
+      <td className="py-4 px-3 md:px-6">
+        <input
+          type="number"
+          min={1}
+          value={localQty}
+          onChange={(e) => setLocalQty(parseInt(e.target.value, 10) || 1)}
+          onBlur={handleBlur}
+          className="border border-gray-300 rounded-md px-3 py-1 w-20 text-sm"
+        />
+      </td>
+      <td className="py-4 px-3 md:px-6 font-medium">
+        ${(item.product_snapshot.price * localQty).toFixed(2)}
+      </td>
+      <td className="py-4 px-3 md:px-6">
+        <button
+          onClick={() => removeItem(item.id)}
+          className="text-red-500 hover:text-red-700 font-medium"
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  );
+};
 
 const CartPage = () => {
+  const { cartItems, loading } = useCart();
+
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.product_snapshot.price * item.quantity,
+    0
+  );
+
+  if (loading) return <div className="text-center py-10">Loading cart...</div>;
+
+  if (cartItems.length === 0)
+    return (
+      <div className="text-center py-10 text-gray-500 flex justify-center flex-col items-center">
+        <img src="/assets/emptycart.png" alt="" />
+        <p className="text-2xl ">Oooop.... your cart is Empty</p>
+        <div className="mt-10">
+          <Link
+            to={"/products"}
+            className="w-full bg-[#DB4444] text-white py-3 px-3 rounded-md mt-10 hover:bg-[#C73A3A] transition"
+          >
+            Go to Shop
+          </Link>
+        </div>
+      </div>
+    );
+
   return (
     <div className="container mx-auto px-4 md:px-0 py-8">
       {/* Breadcrumb */}
@@ -26,59 +107,28 @@ const CartPage = () => {
               <th className="py-4 px-3 md:px-6 font-medium text-gray-700">
                 Subtotal
               </th>
+              <th className="py-4 px-3 md:px-6 font-medium text-gray-700">
+                Remove
+              </th>
             </tr>
           </thead>
           <tbody>
-            {/* Item 1 */}
-            <tr className="border-b hover:bg-gray-50 transition">
-              <td className="py-4 px-3 md:px-6 flex items-center gap-4">
-                <img
-                  src="/assets/ips-monitor.png"
-                  alt="LCD Monitor"
-                  className="w-16 h-16 rounded-md object-cover"
-                />
-                <div className="text-gray-800 font-medium">LCD Monitor</div>
-              </td>
-              <td className="py-4 px-3 md:px-6 text-gray-700">$650</td>
-              <td className="py-4 px-3 md:px-6">
-                <select className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none text-sm">
-                  <option>01</option>
-                  <option>02</option>
-                  <option>03</option>
-                </select>
-              </td>
-              <td className="py-4 px-3 md:px-6 font-medium">$650</td>
-            </tr>
-
-            {/* Item 2 */}
-            <tr className="border-b hover:bg-gray-50 transition">
-              <td className="py-4 px-3 md:px-6 flex items-center gap-4">
-                <img
-                  src="/assets/gamepad.png"
-                  alt="HI Gamepad"
-                  className="w-16 h-16 rounded-md object-cover"
-                />
-                <div className="text-gray-800 font-medium">HI Gamepad</div>
-              </td>
-              <td className="py-4 px-3 md:px-6 text-gray-700">$550</td>
-              <td className="py-4 px-3 md:px-6">
-                <select className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none text-sm">
-                  <option>01</option>
-                  <option selected>02</option>
-                  <option>03</option>
-                </select>
-              </td>
-              <td className="py-4 px-3 md:px-6 font-medium">$1100</td>
-            </tr>
+            {cartItems.map((item) => (
+              <CartItemRow key={item.id} item={item} />
+            ))}
           </tbody>
         </table>
       </div>
 
       {/* Buttons Row */}
       <div className="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
-        <button className="border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition">
-          Return To Shop
-        </button>
+        <Link to={"/products"}>
+          {" "}
+          <button className="border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition">
+            Return To Shop
+          </button>
+        </Link>
+
         <button className="border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition">
           Update Cart
         </button>
@@ -106,7 +156,7 @@ const CartPage = () => {
           <div className="space-y-2 text-gray-700 text-sm">
             <div className="flex justify-between">
               <span>Subtotal:</span>
-              <span>$1750</span>
+              <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between border-b pb-2">
               <span>Shipping:</span>
@@ -114,7 +164,7 @@ const CartPage = () => {
             </div>
             <div className="flex justify-between font-semibold text-gray-800 mt-2">
               <span>Total:</span>
-              <span>$1750</span>
+              <span>${subtotal.toFixed(2)}</span>
             </div>
           </div>
           <button className="w-full bg-[#DB4444] text-white py-3 rounded-md mt-5 hover:bg-[#C73A3A] transition">
