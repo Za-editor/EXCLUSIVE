@@ -76,7 +76,11 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-5 relative">
             <Link className="relative" to={"/cart"}>
               <ShoppingCart className="cursor-pointer" />
-              <span className="absolute -top-3 -right-2 text-white bg-red-500 text-xs px-1 rounded-2xl">{cartCount}</span>
+              {cartCount >= 1 && (
+                <span className="absolute -top-3 -right-2 text-white bg-red-500 text-xs px-1 rounded-2xl">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             {/* Account Dropdown Button */}
