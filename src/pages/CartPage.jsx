@@ -9,15 +9,9 @@ import {
 
 // CartItemRow component
 const CartItemRow = ({ item, updateItem, removeItem }) => {
-  const [localQty, setLocalQty] = React.useState(item.quantity);
-
-  React.useEffect(() => {
-    setLocalQty(item.quantity);
-  }, [item.quantity]);
-
-  const handleBlur = () => {
-    if (localQty < 1) return removeItem(item.id);
-    if (localQty !== item.quantity) updateItem(item.id, localQty);
+  const handleQtyChange = (e) => {
+    const qty = parseInt(e.target.value, 10) || 1;
+    updateItem(item.id, qty);
   };
 
   return (
@@ -39,14 +33,13 @@ const CartItemRow = ({ item, updateItem, removeItem }) => {
         <input
           type="number"
           min={1}
-          value={localQty}
-          onChange={(e) => setLocalQty(parseInt(e.target.value, 10) || 1)}
-          onBlur={handleBlur}
+          value={item.quantity}
+          onChange={handleQtyChange}
           className="border border-gray-300 rounded-md px-3 py-1 w-20 text-sm"
         />
       </td>
       <td className="py-4 px-3 md:px-6 font-medium">
-        ${(item.product_snapshot.price * localQty).toFixed(2)}
+        ${(item.product_snapshot.price * item.quantity).toFixed(2)}
       </td>
       <td className="py-4 px-3 md:px-6">
         <button
@@ -62,19 +55,36 @@ const CartItemRow = ({ item, updateItem, removeItem }) => {
 
 // Main CartPage component
 const CartPage = () => {
-  const { data: cartItems = [], isLoading } = useCartQuery();
+  const { data: cartItemsFromServer = [], isLoading } = useCartQuery();
+  const [cartItems, setCartItems] = React.useState([]);
 
   const updateCartMutation = useUpdateCartItem();
   const removeCartMutation = useRemoveCartItem();
 
+  // Sync local state with server data
+  React.useEffect(() => {
+    setCartItems(cartItemsFromServer);
+  }, [cartItemsFromServer]);
+
   const updateItem = (itemId, qty) => {
+    // Update local state immediately
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === itemId ? { ...item, quantity: qty } : item
+      )
+    );
+    // Call mutation
     updateCartMutation.mutate({ itemId, qty });
   };
 
   const removeItem = (itemId) => {
+    // Update local state immediately
+    setCartItems((prev) => prev.filter((item) => item.id !== itemId));
+    // Call mutation
     removeCartMutation.mutate(itemId);
   };
 
+  // Calculate subtotal based on local state
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.product_snapshot.price * item.quantity,
     0
