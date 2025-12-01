@@ -14,6 +14,7 @@ import ProductDetail from "./pages/ProductDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AppProvider } from "./context/AppContext";
 import { CartProvider } from "./context/CartContext";
+import { CartActionsProvider } from "./context/CartActionsContext";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <BrowserRouter>
-          <CartProvider>
+          <CartActionsProvider>
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Homepage />} />
@@ -57,7 +58,7 @@ function App() {
                 />
               </Route>
             </Routes>
-          </CartProvider>
+          </CartActionsProvider>
         </BrowserRouter>
       </AppProvider>
     </QueryClientProvider>

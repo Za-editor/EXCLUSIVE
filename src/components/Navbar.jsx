@@ -15,6 +15,7 @@ import { useAuth } from "../hooks/useAuth";
 import { signOut } from "../services/auth";
 import { useAppContext } from "../hooks/useAppContext";
 import { useCart } from "../hooks/useCartContext";
+import { useCartQuery } from "../hooks/useCartQuery";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,7 +23,8 @@ const Navbar = () => {
   const { user } = useAuth();
   const { displayName } = useAppContext();
   const navigate = useNavigate();
-  const {cartCount} = useCart()
+  const { data: items = [], isLoading } = useCartQuery();
+  const count = items.length;
 
   // Logout handler
   const handleLogout = async () => {
@@ -76,9 +78,9 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-5 relative">
             <Link className="relative" to={"/cart"}>
               <ShoppingCart className="cursor-pointer" />
-              {cartCount >= 1 && (
+              {count >= 1 && (
                 <span className="absolute -top-3 -right-2 text-white bg-red-500 text-xs px-1 rounded-2xl">
-                  {cartCount}
+                  {count}
                 </span>
               )}
             </Link>

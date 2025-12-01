@@ -1,12 +1,16 @@
+// src/pages/CartPage.jsx
 import React from "react";
-import { useCart } from "../hooks/useCartContext";
 import { Link } from "react-router-dom";
+import { useCartQuery } from "../hooks/useCartQuery";
+import {
+  useUpdateCartItem,
+  useRemoveCartItem,
+} from "../hooks/useCartMutations";
 
-const CartItemRow = ({ item }) => {
-  const { updateItem, removeItem } = useCart();
+// CartItemRow component
+const CartItemRow = ({ item, updateItem, removeItem }) => {
   const [localQty, setLocalQty] = React.useState(item.quantity);
 
-  // Sync localQty if item quantity changes externally
   React.useEffect(() => {
     setLocalQty(item.quantity);
   }, [item.quantity]);
@@ -56,21 +60,34 @@ const CartItemRow = ({ item }) => {
   );
 };
 
+// Main CartPage component
 const CartPage = () => {
-  const { cartItems, loading } = useCart();
+  const { data: cartItems = [], isLoading } = useCartQuery();
+
+  const updateCartMutation = useUpdateCartItem();
+  const removeCartMutation = useRemoveCartItem();
+
+  const updateItem = (itemId, qty) => {
+    updateCartMutation.mutate({ itemId, qty });
+  };
+
+  const removeItem = (itemId) => {
+    removeCartMutation.mutate(itemId);
+  };
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.product_snapshot.price * item.quantity,
     0
   );
 
-  if (loading) return <div className="text-center py-10">Loading cart...</div>;
+  if (isLoading)
+    return <div className="text-center py-10">Loading cart...</div>;
 
   if (cartItems.length === 0)
     return (
       <div className="text-center py-10 text-gray-500 flex justify-center flex-col items-center">
-        <img src="/assets/emptycart.png" alt="" />
-        <p className="text-2xl ">Oooops.... your cart is Empty</p>
+        <img src="/assets/emptycart.png" alt="Empty cart" />
+        <p className="text-2xl mt-4">Oooops.... your cart is Empty</p>
         <div className="mt-10">
           <Link
             to={"/products"}
@@ -114,16 +131,20 @@ const CartPage = () => {
           </thead>
           <tbody>
             {cartItems.map((item) => (
-              <CartItemRow key={item.id} item={item} />
+              <CartItemRow
+                key={item.id}
+                item={item}
+                updateItem={updateItem}
+                removeItem={removeItem}
+              />
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Buttons Row */}
+      {/* Buttons */}
       <div className="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
         <Link to={"/products"}>
-          {" "}
           <button className="border border-gray-400 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-100 transition">
             Return To Shop
           </button>
@@ -134,23 +155,10 @@ const CartPage = () => {
         </button>
       </div>
 
-      {/* Coupon & Total Section */}
+      {/* Cart Summary */}
       <div className="flex flex-col md:flex-row justify-between gap-10 mt-10">
-        {/* Coupon Input */}
-        <div className="">
-          <div className="flex flex-col sm:flex-row gap-3 w-full ">
-            <input
-              type="text"
-              placeholder="Coupon Code"
-              className="flex-1 border border-gray-300 rounded-md px-4 py-3 focus:outline-none text-sm"
-            />
-            <button className="bg-[#DB4444] text-white px-6 py-3 rounded-md hover:bg-[#C73A3A] transition">
-              Apply Coupon
-            </button>
-          </div>
-        </div>
+        <div></div>
 
-        {/* Cart Total */}
         <div className="border border-gray-300 p-6 rounded-md w-full md:w-1/3">
           <h3 className="text-lg font-semibold mb-4">Cart Total</h3>
           <div className="space-y-2 text-gray-700 text-sm">
