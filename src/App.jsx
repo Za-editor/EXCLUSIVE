@@ -38,6 +38,7 @@ function App() {
                   path="/products/:category/:name/:id"
                   element={<ProductDetail />}
                 />
+                <Route path="/cart/checkout" element={<CheckoutPage />} />
 
                 {/*Protected Routes */}
                 <Route

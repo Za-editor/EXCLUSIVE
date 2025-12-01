@@ -1,11 +1,14 @@
 // src/pages/CartPage.jsx
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCartQuery } from "../hooks/useCartQuery";
 import {
   useUpdateCartItem,
   useRemoveCartItem,
 } from "../hooks/useCartMutations";
+
+
+
 
 // CartItemRow component
 const CartItemRow = ({ item, updateItem, removeItem }) => {
@@ -55,6 +58,7 @@ const CartItemRow = ({ item, updateItem, removeItem }) => {
 
 // Main CartPage component
 const CartPage = () => {
+  const navigate = useNavigate();
   const { data: cartItemsFromServer = [], isLoading } = useCartQuery();
   const [cartItems, setCartItems] = React.useState([]);
 
@@ -185,7 +189,10 @@ const CartPage = () => {
               <span>${subtotal.toFixed(2)}</span>
             </div>
           </div>
-          <button className="w-full bg-[#DB4444] text-white py-3 rounded-md mt-5 hover:bg-[#C73A3A] transition">
+          <button
+            className="w-full bg-[#DB4444] text-white py-3 rounded-md mt-5 hover:bg-[#C73A3A] transition"
+            onClick={() => navigate("/checkout", { state: { cartItems } })}
+          >
             Proceed to checkout
           </button>
         </div>
