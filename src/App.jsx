@@ -21,8 +21,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        <CartProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <CartProvider>
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Homepage />} />
@@ -57,8 +57,8 @@ function App() {
                 />
               </Route>
             </Routes>
-          </BrowserRouter>
-        </CartProvider>
+          </CartProvider>
+        </BrowserRouter>
       </AppProvider>
     </QueryClientProvider>
   );

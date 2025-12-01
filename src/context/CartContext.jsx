@@ -23,7 +23,7 @@ export const CartProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await getCartItems(user.id);
-      setCartItems(data || []);
+      setCartItems([...data]);
     } catch (error) {
       console.error("Error fetching cart:", error.message);
     } finally {

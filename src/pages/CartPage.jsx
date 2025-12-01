@@ -70,7 +70,7 @@ const CartPage = () => {
     return (
       <div className="text-center py-10 text-gray-500 flex justify-center flex-col items-center">
         <img src="/assets/emptycart.png" alt="" />
-        <p className="text-2xl ">Oooop.... your cart is Empty</p>
+        <p className="text-2xl ">Oooops.... your cart is Empty</p>
         <div className="mt-10">
           <Link
             to={"/products"}
