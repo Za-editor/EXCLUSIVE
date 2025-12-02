@@ -1,47 +1,58 @@
 // src/services/orders.js
 import { supabase } from "../lib/supabase-client";
 
-/**
- * createOrder
- * Creates an order, copies cart_items → order_items, clears the cart.
- */
 export const createOrder = async (userId, cartItems, totalAmount) => {
   try {
-    // 1. Create the order row
+    // 1. Get the actual cart
+    const { data: cart, error: cartError } = await supabase
+      .from("carts")
+      .select("id")
+      .eq("user_id", userId)
+      .single();
+
+    if (cartError) throw cartError;
+    if (!cart) throw new Error("Cart not found for this user.");
+
+    const cartId = cart.id;
+
+    // 2. Ensure cartItems have correct data
+    if (!cartItems || cartItems.length === 0) {
+      throw new Error("Cart is empty.");
+    }
+
+    // 3. Create the order
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .insert({
         user_id: userId,
         total_amount: totalAmount,
         status: "pending",
-        metadata: {},
       })
       .select()
       .single();
 
     if (orderError) throw orderError;
 
-    // 2. Prepare order_items payload
+    // 4. Order items
     const orderItemsPayload = cartItems.map((item) => ({
       order_id: order.id,
       product_id: item.product_id,
       quantity: item.quantity,
-      price: item.product_snapshot.price,
+      unit_price: item.product_snapshot.price,
       product_snapshot: item.product_snapshot,
     }));
 
-    // 3. Insert order_items
     const { error: itemsError } = await supabase
       .from("order_items")
       .insert(orderItemsPayload);
 
     if (itemsError) throw itemsError;
 
-    // 4. Clear user cart
+    // 5. Clear cart items
     const { error: clearError } = await supabase
       .from("cart_items")
       .delete()
-      .eq("cart_id", cartItems[0]?.cart_id || ""); 
+      .eq("cart_id", cartId);
 
     if (clearError) throw clearError;
 
@@ -68,9 +79,9 @@ export const getOrdersForUser = async (userId) => {
 
 /**
  * getOrderWithItems
- * Returns a single order + its items.
  */
 export const getOrderWithItems = async (orderId) => {
+  // Get order
   const { data: order, error: orderError } = await supabase
     .from("orders")
     .select("*")
@@ -79,6 +90,7 @@ export const getOrderWithItems = async (orderId) => {
 
   if (orderError) throw orderError;
 
+  // Get items
   const { data: items, error: itemsError } = await supabase
     .from("order_items")
     .select("*")
