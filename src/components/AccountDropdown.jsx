@@ -18,7 +18,7 @@ const AccountDropdown = ({ profile, user, onLogout }) => {
   const handleLogout = async () => {
     await onLogout?.();
     setOpen(false);
-    navigate("/login"); // redirect after logout
+    navigate("/login"); 
   };
 
 

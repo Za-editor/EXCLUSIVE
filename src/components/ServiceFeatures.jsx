@@ -1,5 +1,4 @@
-import React from "react";
-import { Truck, Headphones, ShieldCheck } from "lucide-react"; // using lucide-react icons
+import { Truck, Headphones, ShieldCheck } from "lucide-react"; 
 
 const ServiceFeatures = () => {
   return (

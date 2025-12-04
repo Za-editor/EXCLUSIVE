@@ -1,4 +1,4 @@
-import React, {  useRef } from "react";
+import {  useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ui/ProductCard";
 import Button from "./ui/Button";

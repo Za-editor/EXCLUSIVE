@@ -14,7 +14,6 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import { signOut } from "../services/auth";
 import { useAppContext } from "../hooks/useAppContext";
-import { useCart } from "../hooks/useCartContext";
 import { useCartQuery } from "../hooks/useCartQuery";
 
 const Navbar = () => {

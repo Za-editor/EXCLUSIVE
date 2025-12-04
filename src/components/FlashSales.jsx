@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ui/ProductCard";
-import Button from "./ui/Button";
+
 
 const FlashSales = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState({

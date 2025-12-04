@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import speaker from "/assets/jambox.png"; // replace with your actual image path
+import  { useEffect, useState } from "react";
+import speaker from "/assets/jambox.png"; 
 
 const PromoSection = () => {
   const [time, setTime] = useState({

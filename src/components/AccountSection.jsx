@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Button from "../components/ui/Button";
 import { supabase } from "../lib/supabase-client";
 import { useAuth } from "../hooks/useAuth";
