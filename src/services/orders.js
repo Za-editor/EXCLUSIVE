@@ -1,9 +1,8 @@
-// src/services/orders.js
 import { supabase } from "../lib/supabase-client";
 
 export const createOrder = async (userId, cartItems, totalAmount) => {
   try {
-    // 1. Get the actual cart
+    // Get the actual cart
     const { data: cart, error: cartError } = await supabase
       .from("carts")
       .select("id")
@@ -15,12 +14,12 @@ export const createOrder = async (userId, cartItems, totalAmount) => {
 
     const cartId = cart.id;
 
-    // 2. Ensure cartItems have correct data
+    // Ensure cartItems have correct data
     if (!cartItems || cartItems.length === 0) {
       throw new Error("Cart is empty.");
     }
 
-    // 3. Create the order
+    // Create the order
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .insert({
@@ -33,7 +32,7 @@ export const createOrder = async (userId, cartItems, totalAmount) => {
 
     if (orderError) throw orderError;
 
-    // 4. Order items
+    // Order items
     const orderItemsPayload = cartItems.map((item) => ({
       order_id: order.id,
       product_id: item.product_id,
@@ -48,7 +47,7 @@ export const createOrder = async (userId, cartItems, totalAmount) => {
 
     if (itemsError) throw itemsError;
 
-    // 5. Clear cart items
+    // Clear cart items
     const { error: clearError } = await supabase
       .from("cart_items")
       .delete()
@@ -63,9 +62,9 @@ export const createOrder = async (userId, cartItems, totalAmount) => {
   }
 };
 
-/**
- * getOrdersForUser
- */
+
+//  getOrdersForUser
+
 export const getOrdersForUser = async (userId) => {
   const { data, error } = await supabase
     .from("orders")
@@ -77,9 +76,9 @@ export const getOrdersForUser = async (userId) => {
   return data || [];
 };
 
-/**
- * getOrderWithItems
- */
+
+ // getOrderWithItems
+
 export const getOrderWithItems = async (orderId) => {
   // Get order
   const { data: order, error: orderError } = await supabase
@@ -101,9 +100,9 @@ export const getOrderWithItems = async (orderId) => {
   return { ...order, items };
 };
 
-/**
- * updateOrderStatus
- */
+
+//  updateOrderStatus
+
 export const updateOrderStatus = async (orderId, status) => {
   const { data, error } = await supabase
     .from("orders")

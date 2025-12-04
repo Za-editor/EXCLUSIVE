@@ -15,7 +15,7 @@ export const useCartQuery = () => {
       return await getCartItems(user.id);
     },
     enabled: !!user,
-    staleTime: 1000 * 60 * 1, // 1 minute, tune as needed
+    staleTime: 1000 * 60 * 1, 
     refetchOnWindowFocus: true,
   });
 };

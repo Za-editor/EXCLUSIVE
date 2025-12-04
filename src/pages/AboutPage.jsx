@@ -1,4 +1,3 @@
-import React from "react";
 import ServiceFeatures from "../components/ServiceFeatures";
 import { FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { Store, DollarSign, ShoppingBag, PiggyBank } from "lucide-react";

@@ -1,5 +1,5 @@
 // src/pages/CheckoutPage.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { useCartQuery } from "../hooks/useCartQuery";
 import { useCreateOrder } from "../hooks/useOrderMutations";
 import { FaCcVisa, FaCcMastercard, FaCcPaypal } from "react-icons/fa";

@@ -1,4 +1,3 @@
-import React from "react";
 import Hero from "../components/Hero";
 import FlashSales from "../components/FlashSales";
 import Categories from "../components/Categories";

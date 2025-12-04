@@ -1,11 +1,10 @@
-// src/pages/CartPage.jsx
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCartQuery } from "../hooks/useCartQuery";
 import {
   useUpdateCartItem,
   useRemoveCartItem,
 } from "../hooks/useCartMutations";
+import { useEffect, useState } from "react";
 
 
 
@@ -60,13 +59,13 @@ const CartItemRow = ({ item, updateItem, removeItem }) => {
 const CartPage = () => {
   const navigate = useNavigate();
   const { data: cartItemsFromServer = [], isLoading } = useCartQuery();
-  const [cartItems, setCartItems] = React.useState([]);
+  const [cartItems, setCartItems] = useState([]);
 
   const updateCartMutation = useUpdateCartItem();
   const removeCartMutation = useRemoveCartItem();
 
   // Sync local state with server data
-  React.useEffect(() => {
+  useEffect(() => {
     setCartItems(cartItemsFromServer);
   }, [cartItemsFromServer]);
 

@@ -1,7 +1,7 @@
-// src/services/cart.js
+
 import { supabase } from "../lib/supabase-client";
 
-/* ensureCart: returns cart row for user (creates if missing) */
+// ensureCart: returns cart row for user (creates if missing) 
 export const ensureCart = async (userId) => {
   const { data, error } = await supabase
     .from("carts")
@@ -24,7 +24,7 @@ export const ensureCart = async (userId) => {
   return newCart;
 };
 
-/* getCartItems: returns all cart_items for user with consistent shape */
+//  getCartItems: returns all cart_items for user with consistent shape 
 export const getCartItems = async (userId) => {
   const cart = await ensureCart(userId);
 
@@ -39,7 +39,7 @@ export const getCartItems = async (userId) => {
   return data || [];
 };
 
-/* addToCart: inserts or updates and returns the inserted/updated row */
+// addToCart: inserts or updates and returns the inserted/updated row 
 export const addToCart = async (userId, product, qty = 1) => {
   const cart = await ensureCart(userId);
   const imageUrl = product.image || product.images?.[0] || "";
@@ -88,7 +88,7 @@ export const addToCart = async (userId, product, qty = 1) => {
   }
 };
 
-/* updateCartItems: sets quantity (or deletes when qty <= 0) and returns result */
+//  updateCartItems: sets quantity (or deletes when qty <= 0) and returns result 
 export const updateCartItems = async (itemId, qty) => {
   if (qty <= 0) {
     const { error } = await supabase
@@ -110,7 +110,7 @@ export const updateCartItems = async (itemId, qty) => {
   return data;
 };
 
-/* removeCartItem: delete a single item */
+//  removeCartItem: delete a single item 
 export const removeCartItem = async (itemId) => {
   const { data, error } = await supabase
     .from("cart_items")

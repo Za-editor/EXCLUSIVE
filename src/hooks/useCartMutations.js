@@ -12,7 +12,7 @@ export const useAddToCart = () => {
     mutationFn: ({ product, qty = 1 }) => addToCart(user.id, product, qty),
     onSuccess: () => {
       queryClient.invalidateQueries(CART_QUERY_KEY(user?.id));
-      // optional: refetchQueries for other keys e.g. cart-count
+     
     },
   });
 };

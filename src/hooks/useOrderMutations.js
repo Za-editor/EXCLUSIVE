@@ -14,7 +14,7 @@ export const useCreateOrder = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries(ORDERS_QUERY_KEY(user?.id));
-      queryClient.invalidateQueries(CART_QUERY_KEY(user?.id)); // cart gets cleared
+      queryClient.invalidateQueries(CART_QUERY_KEY(user?.id)); 
     },
   });
 };
