@@ -61,7 +61,7 @@ const FlashSales = ({ data }) => {
 
       {/* Header & Timer */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 md:mt-6 gap-6 md:gap-0">
-        {/* Title + Timer Section */}
+   
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-[120px]">
           {/* Title */}
           <h2 className="text-[24px] md:text-[36px] font-semibold text-gray-900 leading-tight">

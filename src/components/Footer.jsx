@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="bg-black">
       <footer className="text-white pt-20 pb-15 container mx-auto px-4 md:px-0">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {/* Exclusive / Subscribe */}
+       
           <div>
             <Link to={"/"}>
               <h2 className="text-[24px] font-bold mb-6 cursor-pointer hover:text-gray-400 ease-in-out duration-400">Exclusive</h2>

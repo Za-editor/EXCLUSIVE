@@ -44,8 +44,7 @@ const ProductCard = ({ item, showDiscount, isLoading, isError }) => {
     >
       {/* Image Section */}
       <div className="relative bg-[#F5F5F5] h-[250px] flex justify-center items-center p-6 overflow-hidden">
-        {/* Discount Tag */}
-
+    
         {showDiscount && (
           <span className="absolute top-2 left-2 bg-red-500 text-white text-[11px] font-medium px-1.5 py-0.5 rounded">
             {item.discountPercentage}

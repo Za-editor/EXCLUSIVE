@@ -186,7 +186,7 @@ export const ProfileForm = () => {
     </div>
   );
 };
-//   MY ACCOUNT
+
 
 export const MyAccount = ({ profile }) => {
 
