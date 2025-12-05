@@ -37,8 +37,7 @@ export const AppProvider = ({ children }) => {
 
     if (error) {
       console.error("Error fetching profile:", error.message);
-      setProfile(profileData); // still set whatever we have
-    } else {
+      setProfile(profileData);
       setProfile(profileData);
     }
   }, [user]);
@@ -59,7 +58,7 @@ export const AppProvider = ({ children }) => {
     if (!authLoading) fetchAll();
   }, [authLoading, fetchAll]);
 
-  // Compute a friendly display name for convenience
+ 
   const displayName =
     profile?.first_name ||
     profile?.name ||

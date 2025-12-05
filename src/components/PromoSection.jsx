@@ -9,7 +9,7 @@ const PromoSection = () => {
     seconds: 35,
   });
 
-  // Simple countdown effect
+  // countdown effect
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prev) => {

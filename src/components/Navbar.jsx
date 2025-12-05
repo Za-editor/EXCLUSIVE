@@ -22,7 +22,7 @@ const Navbar = () => {
   const { user } = useAuth();
   const { displayName } = useAppContext();
   const navigate = useNavigate();
-  const { data: items = [], isLoading } = useCartQuery();
+  const { data: items = []} = useCartQuery();
   const count = items.length;
 
   // Logout handler
