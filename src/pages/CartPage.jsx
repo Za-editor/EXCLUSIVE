@@ -76,7 +76,7 @@ const CartPage = () => {
         item.id === itemId ? { ...item, quantity: qty } : item
       )
     );
-    // Call mutation
+  
     updateCartMutation.mutate({ itemId, qty });
   };
 

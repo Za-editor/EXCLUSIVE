@@ -63,7 +63,7 @@ const CheckoutPage = () => {
         </div>
       )}
 
-      {/* Success Modal */}
+      {/* Success Modal section */}
       {showSuccess && orderData && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
           <div className="bg-white p-7 rounded-lg shadow-xl max-w-md w-full">
@@ -131,10 +131,10 @@ const CheckoutPage = () => {
         </div>
       )}
 
-      {/* Page Container */}
+      {/* Page Container section */}
       {!showSuccess && (
         <div className="container mx-auto px-4 md:px-0 py-8">
-          {/* Breadcrumb */}
+        
           <div className="text-sm text-gray-500 mb-8 flex flex-wrap items-center gap-1">
             <span className="hover:text-gray-700 cursor-pointer">Account</span> /
             <span className="hover:text-gray-700 cursor-pointer">My Account</span>{" "}
@@ -144,7 +144,7 @@ const CheckoutPage = () => {
           </div>
 
           <div className="flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-20">
-            {/* Billing Form */}
+            {/* Billing Form section */}
             <div className="w-full md:w-2/3">
               <h2 className="text-2xl font-semibold mb-6">Billing Details</h2>
               <form className="space-y-5">
@@ -232,7 +232,7 @@ const CheckoutPage = () => {
               </form>
             </div>
 
-            {/* Order Summary */}
+            {/* Order Summary section */}
             <div className="w-full md:w-1/3 border-t md:border-t-0 pt-8 md:pt-0 md:pl-8">
               <div className="space-y-4">
                 {cartItems.map((item) => (
@@ -259,7 +259,7 @@ const CheckoutPage = () => {
                   </div>
                 ))}
 
-                {/* Totals */}
+                {/* Totals section */}
                 <div className="border-t border-gray-200 mt-4 pt-4 space-y-2 text-sm">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal:</span>
@@ -275,7 +275,7 @@ const CheckoutPage = () => {
                   </div>
                 </div>
 
-                {/* Payment */}
+                {/* Payment section */}
                 <div className="space-y-2 mt-5">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
