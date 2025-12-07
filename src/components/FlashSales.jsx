@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ui/ProductCard";
 
-
 const FlashSales = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 3,
@@ -35,23 +34,24 @@ const FlashSales = ({ data }) => {
         return { days, hours, minutes, seconds };
       });
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
   const format = (val) => val.toString().padStart(2, "0");
 
-  // Carousel navigation
+  // Navigation
   const scrollLeft = () => {
-    scrollRef.current.scrollBy({ left: -250, behavior: "smooth" });
+    scrollRef.current?.scrollBy({ left: -250, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    scrollRef.current.scrollBy({ left: 250, behavior: "smooth" });
+    scrollRef.current?.scrollBy({ left: 250, behavior: "smooth" });
   };
 
   return (
-    <div className="container mx-auto overflow-hidden border-b border-gray-200 pt-10 md:pt-[120px] pb-12 md:pb-[87px]">
-      {/* Tag */}
+    <div className="container mx-auto overflow-hidden border-b border-gray-200 pt-8 md:pt-[120px] pb-10 md:pb-[87px]">
+      {/* Section Tag */}
       <div className="flex items-center gap-3">
         <div className="w-3 h-6 bg-red-500 rounded-sm md:w-5 md:h-10"></div>
         <span className="text-red-500 font-semibold text-sm md:text-[16px]">
@@ -59,16 +59,14 @@ const FlashSales = ({ data }) => {
         </span>
       </div>
 
-      {/* Header & Timer */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 md:mt-6 gap-6 md:gap-0">
-   
+      {/* Header + Timer */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mt-5 md:mt-6 gap-6 md:gap-0">
+        {/* Title + Timer */}
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-[120px]">
-          {/* Title */}
           <h2 className="text-[24px] md:text-[36px] font-semibold text-gray-900 leading-tight">
             Flash Sales
           </h2>
 
-          {/* Timer */}
           <div className="flex gap-4 md:gap-6 text-center">
             {[
               { label: "Days", value: timeLeft.days },
@@ -80,7 +78,7 @@ const FlashSales = ({ data }) => {
                 <span className="text-[10px] md:text-[12px] text-gray-700 block">
                   {item.label}
                 </span>
-                <p className="text-[20px] md:text-[32px] font-bold leading-none">
+                <p className="text-[22px] md:text-[32px] font-bold leading-none">
                   {format(item.value)}
                 </p>
               </div>
@@ -108,12 +106,21 @@ const FlashSales = ({ data }) => {
       {/* Product Carousel */}
       <div
         ref={scrollRef}
-        className="mt-6 md:mt-8 flex gap-4 md:gap-[45px] overflow-x-auto scroll-smooth scrollbar-hide snap-x snap-mandatory"
+        className="
+          mt-6 md:mt-8 
+          flex gap-4 md:gap-[45px] 
+          overflow-x-auto scroll-smooth 
+          scrollbar-hide 
+          snap-x snap-mandatory 
+          touch-pan-x 
+          pb-4 
+          overscroll-x-contain
+        "
       >
         {data.map((item) => (
           <div
             key={item.id}
-            className="snap-start shrink-0 w-[160px] md:w-auto"
+            className="snap-start shrink-0 w-[200px] md:w-auto"
           >
             <ProductCard item={item} showDiscount={true} />
           </div>
