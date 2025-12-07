@@ -166,7 +166,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-200">
+          <div className="md:hidden bg-white border-t border-gray-200 absolute left-0 w-full z-50">
             <ul className="flex flex-col items-center gap-4 py-4 text-gray-700">
               <Link to={"/"}>
                 <li>Home</li>
