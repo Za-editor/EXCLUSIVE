@@ -204,23 +204,39 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* Related */}
+      {/* Related Products */}
       <div className="mt-12">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-5 h-8 bg-red-500 rounded-sm"></div>
-          <span className="text-red-500 font-semibold">Related Products</span>
+          <span className="text-red-500 font-semibold text-[16px]">
+            Related Products
+          </span>
         </div>
 
         {relatedLoading ? (
-          <p className="text-gray-600">Loading related products…</p>
+          <p className="text-gray-600 text-sm">Loading related products…</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {related?.length ? (
-              related
-                .slice(0, 5)
-                .map((item) => <ProductCard key={item.id} item={item} />)
+          <div
+            className="
+        grid 
+        grid-cols-2 
+        xs:grid-cols-2 
+        sm:grid-cols-3 
+        md:grid-cols-4 
+        lg:grid-cols-5 
+        gap-4
+      "
+          >
+            {related && related.length > 0 ? (
+              related.slice(0, 5).map((item) => (
+                <div key={item.id} className="w-full">
+                  <ProductCard item={item} showDiscount={false} />
+                </div>
+              ))
             ) : (
-              <p>No related products found.</p>
+              <p className="text-gray-500 text-sm col-span-full">
+                No related products found.
+              </p>
             )}
           </div>
         )}
