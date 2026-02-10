@@ -1,4 +1,4 @@
-// src/pages/CheckoutPage.jsx
+
 import { useState } from "react";
 import { useCartQuery } from "../hooks/useCartQuery";
 import { useCreateOrder } from "../hooks/useOrderMutations";

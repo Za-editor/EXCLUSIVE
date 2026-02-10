@@ -71,7 +71,7 @@ const Categories = () => {
         ref={scrollRef}
         className="
           mt-8 
-          grid grid-cols-3 md:grid-cols-6 md:gap-[30px]
+          grid grid-cols-3 md:grid-cols-4 md:gap-[30px]
            md:block gap-4 overflow-x-auto md:overflow-visible 
           pb-4 
           snap-x snap-mandatory 

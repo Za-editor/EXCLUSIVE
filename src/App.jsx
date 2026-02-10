@@ -7,7 +7,6 @@ import Homepage from "./pages/Homepage";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
 import AccountPage from "./pages/AccountPage";
-import CheckoutPage from "./pages/CheckOutPage";
 import CartPage from "./pages/CartPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetail from "./pages/ProductDetail";
@@ -15,6 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { AppProvider } from "./context/AppContext";
 import { CartProvider } from "./context/CartContext";
 import { CartActionsProvider } from "./context/CartActionsContext";
+import CheckoutPage from "./pages/CheckoutPage";
 
 const queryClient = new QueryClient();
 
@@ -53,7 +53,7 @@ function App() {
                   path="/checkout"
                   element={
                     <ProtectedRoute>
-                      <CheckoutPage />
+                  <CheckoutPage/>
                     </ProtectedRoute>
                   }
                 />
