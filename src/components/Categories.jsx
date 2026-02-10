@@ -70,15 +70,15 @@ const Categories = () => {
       <div
         ref={scrollRef}
         className="
-          mt-8 
-          grid grid-cols-3 md:grid-cols-4 md:gap-[30px]
-           md:block gap-4 overflow-x-auto md:overflow-visible 
-          pb-4 
-          snap-x snap-mandatory 
-          scrollbar-hide 
-          touch-pan-x 
-          overscroll-x-contain
-        "
+    mt-8
+    flex gap-4 overflow-x-auto pb-4
+    snap-x snap-mandatory
+    scrollbar-hide
+    touch-pan-x overscroll-x-contain
+
+    md:grid md:grid-cols-6 md:gap-[30px]
+    md:overflow-visible
+  "
       >
         {categories.map((cat) => {
           const Icon = cat.icon;

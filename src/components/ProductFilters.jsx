@@ -24,19 +24,24 @@ const ProductFilters = ({ filters, setFilters }) => {
     <aside className="w-full md:w-1/4 border-r border-gray-200 pr-4 space-y-6">
       {/* Categories */}
       <div>
-        <h3 className="font-semibold mb-2">Categories</h3>
-        {categories.map((cat) => (
-          <label key={cat} className="flex items-center gap-2 mb-2">
-            <input
-              className="cursor-pointer"
-              type="radio"
-              name="category"
-              checked={filters.category === cat}
-              onChange={() => setFilters({ ...filters, category: cat })}
-            />
-            <span className="capitalize">{cat.replace("-", " ")}</span>
-          </label>
-        ))}
+        <h3 className="font-semibold mb-3">Categories</h3>
+
+        <div className="flex flex-wrap gap-x-4 gap-y-2 md:flex-col">
+          {categories.map((cat) => (
+            <label
+              key={cat}
+              className="flex items-center gap-2 text-sm cursor-pointer"
+            >
+              <input
+                type="radio"
+                name="category"
+                checked={filters.category === cat}
+                onChange={() => setFilters({ ...filters, category: cat })}
+              />
+              <span className="capitalize">{cat.replace("-", " ")}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
       {/* Price Range Inputs */}
